@@ -4,7 +4,7 @@ Version: 0.0.0.1
 Date: 2017-05-17
 Authors@R: c(person("Rose", "Du", email = "rdu@bwh.harvard.edu", role = c("aut", "cre")),person("Vince", "Carey", email = "stvjc@channing.harvard.edu", role = c("aut", "cre")))
 Description: What the package does (one paragraph).
-Depends: Depends: edgeR, methylKit, statmod, nloptr, lme4, hash, parallel
+Depends: edgeR, methylKit, statmod, nloptr, lme4, hash, parallel
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
