@@ -1,9 +1,11 @@
 Package: deconvSeq
 Title: What the Package Does (one line, title case)
-Version: 0.0.0.1
-Date: 2017-05-17
-Authors@R: c(person("Rose", "Du", email = "rdu@bwh.harvard.edu", role = c("aut", "cre")),person("Vince", "Carey", email = "stvjc@channing.harvard.edu", role = c("aut", "cre")))
-Description: What the package does (one paragraph).
+Version: 0.0.0.3
+Date: 2017-05-18
+Authors@R: c(person("Rose", "Du", email = "rdu@bwh.harvard.edu", role = c("aut", "cre")),person("Vince", "Carey", email = "stvjc@channing.harvard.edu", role = c("aut")))
+Author: Rose Du, Vince Carey
+Maintainer: Rose Du <rdu@bwh.harvard.edu>, Vince Carey <stvjc@channing.harvard.edu>
+Description: Cell type deconvolution.
 Depends: edgeR, methylKit, statmod, nloptr, lme4, hash, parallel
 License: What license is it under?
 Encoding: UTF-8
