@@ -1,13 +1,13 @@
 Package: deconvSeq
 Title: What the Package Does (one line, title case)
-Version: 0.0.0.3
-Date: 2017-05-18
+Version: 0.0.1.0
+Date: 2018-04-22
 Authors@R: c(person("Rose", "Du", email = "rdu@bwh.harvard.edu", role = c("aut", "cre")),person("Vince", "Carey", email = "stvjc@channing.harvard.edu", role = c("aut")))
 Author: Rose Du, Vince Carey
 Maintainer: Rose Du <rdu@bwh.harvard.edu>, Vince Carey <stvjc@channing.harvard.edu>
-Description: Cell type deconvolution.
-Depends: edgeR, methylKit, statmod, nloptr, lme4, hash, parallel
-License: What license is it under?
+Description: Cell type deconvolution for RNA sequencing and bisulfite sequencing.
+Depends: edgeR, methylKit, Rsolnp, MASS, psych, Rmisc
+License: 
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1.9000
