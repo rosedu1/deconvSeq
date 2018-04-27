@@ -1,6 +1,5 @@
 #modified from methylKit
-f1<-function(cutoff,rawp){sum(rawp<cutoff)/length(rawp)}
-
+#' @export
 my_diffMethFromDesign_matrix<-function(cur_methmat, cur_design, cur_formula, cur_treatment=NULL, mixedef=FALSE, fstat=TRUE){
 
 	#has this format:  chr start   end strand coverage1 numCs1 numTs1 coverage2 numCs2 numTs2	
@@ -64,26 +63,14 @@ my_diffMethFromDesign_matrix<-function(cur_methmat, cur_design, cur_formula, cur
 		botherror.0=0
 	
 	
-		#obj=glm(as.formula(paste0("cbind(Cs, Ts)~", cur_formula)), data=cur_data, family=binomial(link=logit) )
-		#obj=glmer(as.formula(paste0("cbind(Cs, Ts)~", cur_formula)), data=cur_data, family=binomial(link=logit))
-		#obj=bglmer(as.formula(paste0("cbind(Cs, Ts)~", cur_formula)), data=cur_data, family=binomial(link=logit),fixef.prior = normal)
-		
-		#use glmer unless there is a warning or error, then use bglmer, and if there are still convergence problems then output NA
-	
 	
 		if(mixedef==TRUE){
 		#use mixed effects model
-        #if bglmer results in an error or warning, return 1
-			#bf <- tryCatch(bglmer(as.formula(paste0("cbind(Cs, Ts)~", cur_formula)), data=cur_data, family=binomial(link=logit),fixef.prior = normal), warning=function(w) {1}, error=function(e) {1})
-            #if glmer results in an error or a warning, use bf for bglmer instead
 			obj <- tryCatch(glmer(as.formula(paste0("cbind(Cs, Ts)~", cur_formula)), data=cur_data, family=binomial(link=logit)),error=function(e) {1}, warning=function(w) {1})
 		
-			#botherror= ifelse(class(obj) == "glmerMod" | class(obj)=="bglmerMod",0,1)
 			botherror= ifelse(class(obj) == "glmerMod",0,1)
             
             if((fstat==TRUE) && (botherror==0)){
-                #bf.0 <- tryCatch(bglmer(as.formula(paste0("cbind(Cs, Ts)~", 1)), data=cur_data, family=binomial(link=logit),fixef.prior = normal), warning=function(w) {1}, error=function(e) {1})
-                #if glmer results in an error or a warning, use bf for bglmer instead
                 obj.0 <- tryCatch(glmer(as.formula(paste0("cbind(Cs, Ts)~", 1)), data=cur_data, family=binomial(link=logit)),error=function(e) {1}, warning=function(w) {1})
                 botherror.0= ifelse(class(obj.0) == "glmerMod",0,1)
                 if(botherror.0==0){ 
@@ -98,12 +85,10 @@ my_diffMethFromDesign_matrix<-function(cur_methmat, cur_design, cur_formula, cur
 		} else {
 		#use regular glm	
 		#only modified this for cell type deconvolution
-			#obj <- tryCatch( glm(as.formula(paste0("cbind(Cs, Ts)~", cur_formula)), data=cur_data, family=binomial(link=logit)), error=function(e) {1}, warning=function(w) {1})
 			obj <- tryCatch( glm(as.formula(paste0("cbind(Cs, Ts)~", cur_formula)), data=cur_data, family=binomial(link=logit)), error=function(e) {1})
 			botherror = ifelse(class(obj)[1] == "glm",0,1)
             
             if((fstat==TRUE) && (botherror==0)){
-                #obj.0 <- tryCatch( glm(as.formula(paste0("cbind(Cs, Ts)~", 1)), data=cur_data, family=binomial(link=logit)), error=function(e) {1}, warning=function(w) {1})
                 obj.0 <- tryCatch( glm(as.formula(paste0("cbind(Cs, Ts)~", 1)), data=cur_data, family=binomial(link=logit)), error=function(e) {1})
                 botherror.0 = ifelse(class(obj.0)[1] == "glm",0,1)
                 if(botherror.0==0){
@@ -132,11 +117,11 @@ my_diffMethFromDesign_matrix<-function(cur_methmat, cur_design, cur_formula, cur
 		if(botherror==0 && botherror.0==0){
             
             #for mixed effects model, only fixed effects results are obtained
-            beta <- obj$coefficients #includes coeff that are NAs
+            beta <- summary(obj)$coefficients[,'Estimate'] #includes coeff that are NAs
             p.value <- summary(obj)$coefficients[,'Pr(>|z|)'] #note that summary removes NAs
             se <- summary(obj)$coefficients[,'Std. Error']
             
-            #put NAs back so that beat, p.value, and se are the same length
+            #put NAs back so that beta, p.value, and se are the same length
             if (length(p.value) != length(beta)){
             		test = rep(NA,length(beta))
             	names(test) = names(beta)
@@ -152,9 +137,7 @@ my_diffMethFromDesign_matrix<-function(cur_methmat, cur_design, cur_formula, cur
             }
             
             
-            
-            #for case of the one SMC sample having 0 Cs and Ts, there are no coefficient for SMC
-              
+                         
             if (fstat==TRUE){
             		return(c(beta,se,p.value,pfstat.type,pfstat))
             } else {
@@ -162,8 +145,7 @@ my_diffMethFromDesign_matrix<-function(cur_methmat, cur_design, cur_formula, cur
             }
             
             
-            #return( c(beta_last,p.value) )
-		} else {
+ 		} else {
              return( NA )
             
 		}
@@ -208,7 +190,7 @@ my_diffMethFromDesign_matrix<-function(cur_methmat, cur_design, cur_formula, cur
 				}
 				
 				res2 = matrix(unlist(res),ncol=as.numeric(names(reslentab)[realntype]),byrow=TRUE)
-				#1/2/17 also fixed this so that index is not just one beyond the last bad index but the first good index
+				#fixed this so that index is not just one beyond the last bad index but the first good index
 				realindex = which(reslen %in% as.numeric(names(reslentab)[realntype]))[1]
 				colnames(res2) =  names(res[[realindex]])
 
