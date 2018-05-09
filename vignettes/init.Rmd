@@ -1,0 +1,43 @@
+---
+title: "Deconvolution of cell mixture distribution in sequencing data"
+author: "Rose Du, Vince Carey, Scott T. Weiss"
+output:
+    pdf_document
+---
+
+# Abstract
+
+Tissue heterogeneity is an important confounder in genomic analyses. Prior deconvolution methods have largely been applied to microarray data. We present a computational deconvolution method for RNA sequencing and bisulfite sequencing data that utilizes a generalized linear model to model effects of tissue type on feature quantification. Estimated model coefficients can then be used to predict cell type mixture within a tissue. Predicted cell type mixtures were validated against actual cell counts in whole blood samples. Using this method, we obtained a mean correlation of 0.99 (95% CI 0.76-0.1.00) from the RNA sequencing data and 0.98 (95% CI 0.91-1.00) from the reduced representation bisulfite sequencing data.
+
+# Introduction
+
+Transcriptome-wide and genome-wide studies have shown that both mRNA abundance patterns1 and DNA methylation patterns2 vary by cell type. However, the cell type mixture in tissue is frequently difficult to assess, particularly in minute samples. In order to account for cell type mixture, a number of computational approaches have been proposed to assess the cell type composition of a tissue sample. Recently, Houseman et al. and others have proposed a cell type deconvolution technique to determine cell type mixture in DNA methylation and gene expression microarrays3-5. Prior deconvolution techniques have largely utilized linear regression3, 6, 7. While linear regression based techniques are applicable to microarray data, sequencing data are better captured using generalized linear models. Specifically, negative binomial models have been used to account for the quadratic mean-variance relationship in RNA sequencing (RNAseq) data8 and logistic regression models have been used to assess methylation proportions in bisulfite sequencing data, including reduced representation bisulfite sequencing data (RRBS)9. Thus, to determine cell type mixtures from sequencing data, we developed a new framework for deconvolution of sequencing data that is based on generalized linear models. 
+
+
+# Statistical Methods
+
+## Deconvolution of RNAseq data
+
+Similar to the approach in EdgeR10, we used the negative binomial model to account for the quadratic mean-variance relationship in RNAseq data and used gene-specific variance estimates. <!-- For cell type data with k=1,…,m genes, h=1,…,n0 cell type samples, and j=1,…,d0 cell types for each sample, we have
+g(μ_0hk )= ∑_(j=1)^(d_0)▒〖w_0hj B_0jk 〗 -->
+
+For cell type data with $k = 1, \ldots, m$ genes,
+$h = 1, \ldots, n_0$ directly assayed cells of $d_0$ distinct types,
+the model is
+\[
+g(\mu_{0hk}) = \sum\limits_{j=1}^{d_0} w_{0hj} B_{0jk}
+\]
+
+<!--
+where g is the log link for the negative binomial distribution, 〖μ_0hk=E(Y〗_0hk)= N_h λ_hk is the expectation value of the count data Y_0hkfor sample h and gene k and, N_h is the library size, λ_hk is the expected proportions of reads mapped to gene k in sample h, and w_0hj is the cell type components for sample h. Since a cell type sample h contains only a single cell type, j*, w_(0hj*)=1 while w_0hj=0 for all other j. For the negative binomial distribution, the variance is 
+"Var" (Y_0hk )= V(μ_0hk )= μ_0hk+ϕ_0k μ_0hk^2
+where ϕ_0k is the negative binomial dispersion parameter. For the tissue data to be evaluated with i=1,…,n1 samples, we have
+g(μ_1ik )= ∑_(j=1)^(d_1)▒〖z_1ij B_1jk 〗
+where 〖μ_1ik=E(Y〗_1ik)=N_i λ_ik is the expectation value of the count data for sample i and gene k , N_i is the library size, λ_ik is the expected proportions of reads mapped to gene k in sample i, and and z_(1i ̂j) are the covariates for sample i. The variance is
+"Var" (Y_1ik )= V(μ_1ik )= μ_1ik+ϕ_1k μ_1ik^2
+where ϕ_1k is the negative binomial dispersion parameter. We used EdgeR to determine the genewise dispersion, ϕ_k, and samplewise offset, α_h=log⁡(M_h), for the data to be used with the generalized linear model with the negative binomial distribution and log link, where M_h is the effective library size for sample h and is estimated using the weighted trimmed mean of M-values (TMM) scale-normalization method8. The offset is log(library size  normalization factor) where the normalization factor is obtained using the trimmed mean of M-values (TMM) method8. To solve for B0, we fitted the generalized linear model using Fisher scoring with the Levenberg-Marquardt modification to increase convergence (statmod11 package in R v3.3.1). The F statistic is
+ F=(((D_0-D_f )/(d_0-1)))⁄((D_f/(n_0-d_0 )) )
+where D0 is the deviance of the null model and Df is the deviance of the full model.
+D_f=2∑_h▒[Y_(0hk )  log⁡〖Y_0hk/μ_0hk -(Y_0hk+1/ϕ_0k )  log⁡((1+ϕ_0k Y_0hk)/(1+ϕ_0k μ_0hk )) 〗 ] 
+
+-->

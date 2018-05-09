@@ -110,6 +110,7 @@ getmethmat <- function(cpgmethfil){
 
 #EdgeR analysis, obtain B0, the projection matrix
 #' compute B0, projection matrix, given counts
+#' @import statmod
 #' @param countmat a matrix of counts with rows corresponding to genes and columns to samples
 #' @param design output of model.matrix
 #' @param ncpm.min filtering threshold for cpm
@@ -251,6 +252,7 @@ getcorr <- function(x1, x2){
 #MAXITER is maximum iterations before calculation is stopped and considered nonconvergent
 #use this to get x1 mixture data for tissue using cell type projection matrix b0 (RNAseq)
 #' compute mixture data given projection matrix (RNAseq)
+#' @import nloptr
 #' @param NB0 number of genes to be retained, ordered by f-stat p-value
 #' @param resultb0 output of \code{\link{getb0.rnaseq}}
 #' @param dge output of \code{\link{getdge}}
