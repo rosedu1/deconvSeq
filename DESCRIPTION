@@ -1,14 +1,11 @@
 Package: deconvSeq
-Title: What the Package Does (one line, title case)
-Version: 0.0.1.1
-Date: 2018-04-22
+Title: Cell Type Deconvolution for RNA Sequencing and Bisulfite Sequencing
+Version: 0.0.1.2
+Date: 2018-05-09
 Authors@R: c(person("Rose", "Du", email = "rdu@bwh.harvard.edu", role = c("aut", "cre")),person("Vince", "Carey", email = "stvjc@channing.harvard.edu", role = c("aut")))
-Author: Rose Du, Vince Carey
-Maintainer: Rose Du <rdu@bwh.harvard.edu>, Vince Carey <stvjc@channing.harvard.edu>
-Description: Cell type deconvolution for RNA sequencing and bisulfite sequencing.
-Depends: edgeR, Rsolnp, MASS, psych, Rmisc
-Suggests: methylKit
-License: 
-Encoding: UTF-8
+Description: Uses cell type deconvolution for RNA sequencing and bisulfite sequencing data to obtain cell type mixture in tissues. Users specify cell type data and tissue data.
+Depends: R (>= 3.3.2) 
+Imports: edgeR, Rsolnp, MASS, psych, Rmisc, methylKit, stats, lme4
+License: GPL-3
 LazyData: true
 RoxygenNote: 6.0.1.9000
