@@ -1,7 +1,16 @@
-#modified from methylKit
+#' modified from methylKit, performs regression given methylation matrix
+#' @param cur_methmat methylation matrix
+#' @param cur_design design matrix
+#' @param cur_formula formula
+#' @return result 
 #' @export
-my_diffMethFromDesign_matrix<-function(cur_methmat, cur_design, cur_formula, cur_treatment=NULL, mixedef=FALSE, fstat=TRUE){
+my_diffMethFromDesign_matrix<-function(cur_methmat, cur_design, cur_formula){
 
+
+	cur_treatment=NULL
+	mixedef=FALSE
+	fstat=TRUE
+	
 	#has this format:  chr start   end strand coverage1 numCs1 numTs1 coverage2 numCs2 numTs2	
 	numCs.index = grep("Cs",colnames(cur_methmat))
 	numTs.index = grep("Ts",colnames(cur_methmat))
