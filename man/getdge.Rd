@@ -7,14 +7,14 @@
 getdge(countmat, design, ncpm.min = 1, nsamp.min = 4)
 }
 \arguments{
-\item{countmat}{a matrix of counts with rows corresponding to 
+\item{countmat}{a matrix of counts with rows corresponding to
 genes and columns to samples}
 
 \item{design}{output of model.matrix}
 
 \item{ncpm.min}{filtering threshold for cpm}
 
-\item{nsamp.min}{minimum number of samples that must have cpm 
+\item{nsamp.min}{minimum number of samples that must have cpm
 exceeding ncpm.min for a gene to be retained}
 }
 \value{

@@ -9,10 +9,10 @@ data("data_celltypes_rrbs")
 }
 \description{
 \itemize{
-\item methmat methylation matrix 
+\item methmat methylation matrix
 \item celltypes.rrbs vector of kinds of cell types
-\item design.rrbs design matrix 
-\item sample.id.rrbs sample IDs 
+\item design.rrbs design matrix
+\item sample.id.rrbs sample IDs
 }
 }
 \keyword{datasets}

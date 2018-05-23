@@ -13,7 +13,7 @@ getb0.rnaseq(dge, design, ncpm.min = 1, nsamp.min = 4)
 
 \item{ncpm.min}{filtering threshold for cpm}
 
-\item{nsamp.min}{minimum number of samples that must have cpm 
+\item{nsamp.min}{minimum number of samples that must have cpm
 exceeding ncpm.min for a gene to be retained}
 }
 \value{

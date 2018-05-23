@@ -7,8 +7,8 @@
 getb0.biseq(methmat, design)
 }
 \arguments{
-\item{methmat}{a matrix of counts with rows corresponding to methylation 
-sites and columns. Columns are: chr start   end strand coverage1 numCs1 
+\item{methmat}{a matrix of counts with rows corresponding to methylation
+sites and columns. Columns are: chr start   end strand coverage1 numCs1
 numTs1 coverage2 numCs2 numTs2 ....}
 
 \item{design}{design matrix, output of model.matrix}

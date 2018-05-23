@@ -11,7 +11,7 @@ data("data_celltypes_rnaseq")
 \itemize{
 \item dge.celltypes DGE object (from EdgeR) of RNAseq results
 \item cnts.celltypes count matrix
-\item design.rnaseq design matrix 
+\item design.rnaseq design matrix
 \item sample.id.rnaseq sample IDs
 }
 }

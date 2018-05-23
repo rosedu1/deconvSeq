@@ -12,8 +12,8 @@ getx1.biseq(NB0, b0, methmat, sample.id, celltypes, MAXITER = 10000,
 
 \item{b0}{output of \code{\link{getb0.biseq}}}
 
-\item{methmat}{a matrix of counts with rows corresponding to methylation 
-sites and columns. Columns are: chr start   end strand coverage1 numCs1 
+\item{methmat}{a matrix of counts with rows corresponding to methylation
+sites and columns. Columns are: chr start   end strand coverage1 numCs1
 numTs1 coverage2 numCs2 numTs2 ....}
 
 \item{sample.id}{vector of sample IDs}

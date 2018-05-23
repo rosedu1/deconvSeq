@@ -9,7 +9,7 @@ data("data_tissue_rnaseq")
 }
 \description{
 \itemize{
-\item dge.tissue DGE object (from EdgeR) of RNAseq results 
+\item dge.tissue DGE object (from EdgeR) of RNAseq results
 \item cnts.tissue count matrix
 \item cbc.rnaseq known cell type mixture for tissue
 }
