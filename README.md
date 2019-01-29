@@ -4,7 +4,7 @@ R package for performing cell type deconvolution of bulk RNA sequencing, single 
 
 ## Installation
 
-The user download [tar ball](https://github.com/rosedu1/deconvSeq/tarball/current/), and run `R CMD INSTALL` on it, or use the **devtools** package to install from GitHub:
+The user can download [tar ball](https://github.com/rosedu1/deconvSeq/tarball/current/), and run `R CMD INSTALL` on it, or use the **devtools** package to install from GitHub:
 
 ```r
 ## devtools is required
