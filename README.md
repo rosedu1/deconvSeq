@@ -1,4 +1,4 @@
-#deconvSeq
+# deconvSeq
 
 R package for performing cell type deconvolution of bulk RNA sequencing, single cell RNA sequencing, and bisulfite sequencing data.
 
