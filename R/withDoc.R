@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+#'@import edgeR stats methylKit simpleSingleCell   scran 
+=======
 #'@import edgeR stats   git2r methylKit simpleSingleCell  SingleCellExperiment scater scran SummarizedExperiment
+>>>>>>> da6dabc5622e35b9fed80bedbbcd472d3a979555
 #'@importFrom MASS glm.nb
 #'@importFrom lme4 glmer
 #'@importFrom Rsolnp solnp
@@ -6,6 +10,12 @@
 #'@importFrom psych fisherz paired.r fisherz2r
 #'@importFrom biomaRt getBM useMart useDataset
 #'@importFrom utils read.delim
+<<<<<<< HEAD
+#' @rawNamespace import(SingleCellExperiment, except = c(cpm))
+#' @rawNamespace import(SummarizedExperiment, except = c(merge,as.data.frame,start,end))
+#' @rawNamespace import(scater, except = c(filter))
+=======
+>>>>>>> da6dabc5622e35b9fed80bedbbcd472d3a979555
 NULL
 
 
@@ -44,7 +54,13 @@ NULL
 #' This is the example data for scRNA sequencing
 #'
 #' \itemize{
+<<<<<<< HEAD
+#'	\item cnts.scrnaseq count matrix for full scRNAseq dataset
+#' \item cnts.sc count matrix for scRNAseq dataset after filtering using prep_scrnaseq(cnts.scrnaseq, genenametype = "hgnc_symbol",cellcycle=NULL, count.threshold=0.05)
+#' \item cnts.sc.G1 count matrix for scRNAseq after filtering cnts.sc for cells in G1 phase of cell cycle
+=======
 #'	\item cnts.scrnaseq count matrix for full dataset
+>>>>>>> da6dabc5622e35b9fed80bedbbcd472d3a979555
 #' }
 #' @name data_scrnaseq
 #' @docType data
@@ -128,6 +144,16 @@ NULL
 #' Count matrix for single cell RNAseq
 "cnts.scrnaseq"
 
+<<<<<<< HEAD
+#' Count matrix for single cell RNAseq after filtering for count threshold of 0.05
+"cnts.sc"
+
+#' Count matrix for single cell RNAseq after filtering cnts.sc for G1 cell cycle phase
+"cnts.sc.G1"
+
+
+=======
+>>>>>>> da6dabc5622e35b9fed80bedbbcd472d3a979555
 #==================================================
 #FUNCTIONS
 #==================================================
@@ -420,15 +446,25 @@ getx1.rnaseq<-function(NB0="top_bonferroni", resultb0, dge_s, MAXITER=1000, x0=N
 #' methmat = getmethmat(filnames=c(file1,file2), sample.id=c("sample1","sample2"))
 #' @export
 getmethmat <- function(filnames, sample.id){
+<<<<<<< HEAD
+	WD = getwd()
+	for(i in 1:length(filnames)){
+		system(paste0("awk '($4~/^CG/)' ",filnames[i]," > ",WD,"/", basename(filnames[i]),".CpG"))
+=======
 	
 	for(i in 1:length(filnames)){
 		system(paste0("awk '($4~/^CG/)' ",filnames[i]," > ", basename(filnames[i]),".CpG"))
+>>>>>>> da6dabc5622e35b9fed80bedbbcd472d3a979555
 	}
 	
 	awkfil = system.file("extdata","convert_chr_name_grch38.awk", package="deconvSeq")
 	nfil=c()
 	for(i in 1:length(filnames)){
+<<<<<<< HEAD
+		system(paste0("awk -f ", awkfil,"  ",basename(filnames[i]),".CpG"," > ", WD,"/" ,basename(filnames[i]),".CpG_chr"))
+=======
 		system(paste0("awk -f ", awkfil,"  ",basename(filnames[i]),".CpG"," > ", basename(filnames[i]),".CpG_chr"))
+>>>>>>> da6dabc5622e35b9fed80bedbbcd472d3a979555
 		nfil=c(nfil,paste0(basename(filnames[i]),".CpG_chr"))
 	}
 
@@ -440,7 +476,11 @@ getmethmat <- function(filnames, sample.id){
 	#remove rows in which all Ts are 0 or all Cs are 0 
 	meth.filter = meth.data[-which(rowSums(meth.data[,meth@numTs.index])==0 | rowSums(meth.data[,meth@numCs.index])==0),]
 
+<<<<<<< HEAD
+	cat("files *.CpG and *.CpG_chr are written to current working directory\n")
+=======
 	cat("files *.CpG and *.CpG_chr are written to working directory\n")
+>>>>>>> da6dabc5622e35b9fed80bedbbcd472d3a979555
 	
 	return(meth.filter)
 }
