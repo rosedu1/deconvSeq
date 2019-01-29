@@ -3,10 +3,7 @@ title: "deconvSeq: Deconvolution of cell mixture distribution in sequencing data
 author: "Rose Du, Vince Carey, Scott T. Weiss"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
-<<<<<<< HEAD
 bibliography: vigbib.bib
-=======
->>>>>>> da6dabc5622e35b9fed80bedbbcd472d3a979555
 vignette: >
   %\VignetteIndexEntry{deconvSeq: Deconvolution of cell mixture distribution in sequencing data}
   %\VignetteEngine{knitr::rmarkdown}
@@ -18,22 +15,15 @@ knitr::opts_chunk$set(fig.width = 4.5, fig.height = 3.5)
 ```
 # Introduction
 
-<<<<<<< HEAD
 `deconvSeq` is an R package for performing cell type deconvolution of whole tissue using bulk RNA sequencing (RNAseq) or bisulfite sequencing data such as reduced representation bisulfite sequencing (RRBS). Required input includes the sequencing data for the individual cell types and the whole tissue of interest.
 
 In this vignette, we will demonstrate how to perform the analysis starting from a toy read count matrix for RNAseq (output from HTSeq [@anders15]) and from a methylation count matrix (output from BSMAP [@xi09]).  Data included with the package are: for RNA sequencing (data_celltypes_rnaseq and data_tissue_rnaseq), reduced representation bisulfite sequencing (data_celltypes_rrbs and data_tissue_rrbs), and single cell RNA sequencing (data_scrnaseq).
-=======
-`deconvSeq` is an R package for performing cell type deconvolution of whole tissue using RNA sequencing or bisulfite sequencing data. Required input includes the sequencing data for the individual cell types and the whole tissue of interest.
-
-For this vignette, we will use the data included with the package for RNA sequencing (data_celltypes_rnaseq and data_tissue_rnaseq) and reduced representation bisulfite sequencing (data_celltypes_rrbs and data_tissue_rrbs).
->>>>>>> da6dabc5622e35b9fed80bedbbcd472d3a979555
 
 ```{r, message = FALSE}
 library(deconvSeq)
 ```
 
 ## Example using RNA sequencing data
-<<<<<<< HEAD
 Read counts files for individual samples such as the output from HTSeq [@anders15] are loaded and combined into a single read count matrix, `countmat`,  where the rows are the genes and the columns are the samples. The files are provided for illustrative purposes only and are not used subsequently in this vignette.
 ```{r}
 file1 = system.file("extdata","sample1_genecounts.txt", package="deconvSeq")
@@ -42,16 +32,11 @@ countmat = getrnamat(filnames=c(file1,file2),sample.id=c("sample1","sample2"))
 ```
 
 Load the example data, `data_celltypes_rnaseq`, for individual cell types (T cells, B cells, monocytes, granulocytes). This includes 1) `cnts.celltypes`, count matrix for the individual cell types, 2) `design.rnaseq`, design matrix for `cnts.celltypes`, 3) `dge.celltypes`, DGEList (EdgeR, [@robinson10]) object derived from `cnts.celltypes`, and 4) `sample.id.rnaseq`, sample IDs which are column names for `cnts.celltypes`.
-=======
-
-First load the example data for individual cell types (T cells, B cells, monocytes, granulocytes) and create `DGEList` object using `EdgeR`.
->>>>>>> da6dabc5622e35b9fed80bedbbcd472d3a979555
 
 ```{r}
 data("data_celltypes_rnaseq") 
 ```
 
-<<<<<<< HEAD
 Create `DGEList` object, `dge.celltypes`, from count matrix, `cnts.celltypes`.
 
 ```{r results="hide"}
@@ -79,61 +64,28 @@ resultx1 = getx1.rnaseq(NB0=50,b0,dge.celltypes)
 
 Then we compare our predicted results with the actual cell types, `x2`.
 
-=======
-Then compute projection matrix, `b0`.
-```{r}
-set.seed(1234)
-b0 = getb0.rnaseq(dge.celltypes, design.rnaseq, ncpm.min=1, nsamp.min=4)
-```
-
-We will use the top 50 genes for the signature gene set. First, we obtain the predicted cell type mixture, `resultx1`, using the deconvolution method.
-
-```{r}
-nb0 = 50
-resultx1 = getx1.rnaseq(nb0,b0,dge.celltypes)
-```
-
-Then we compare our predicted results with the actual cell types, `x2`.
->>>>>>> da6dabc5622e35b9fed80bedbbcd472d3a979555
 ```{r}
 x2 = as.data.frame(design.rnaseq,row.names=sample.id.rnaseq)
 cr = getcorr(resultx1$x1,x2)
 plot(cr, ylim=c(0,1), ylab="Correlation")
 ```
 
-<<<<<<< HEAD
 We can now load the data for the whole tissue samples. `data_tissue_rnaseq`. This includes: 1) `cnts.tissue`, count matrix for tissue, 2) `dge.tissue`, DGEList object derived from `cnts.tissue`, and 3) `cbc.rnaseq`, matrix of actual cell composition of the tissue.
 
 ```{r results="hide"}
 data("data_tissue_rnaseq") 
 dge.tissue = getdge(cnts.tissue,design=NULL, ncpm.min=1,nsamp.min=4)
-=======
-We can now load the data for the whole tissue samples.
-
-```{r results="hide"}
-data("data_tissue_rnaseq") 
-dge.tissue = getdge(cnts.tissue,design=NULL, ncpm.min=1, nsamp.min=4)
->>>>>>> da6dabc5622e35b9fed80bedbbcd472d3a979555
 ```
 
 Using the 50 signature genes from the projection matrix, `b0`, we compute the predicted cell type mixture for the whole tissue sample, `resultx1.tissue`.
 
 ```{r results="hide"}
-<<<<<<< HEAD
 resultx1.tissue = getx1.rnaseq(NB0=50,b0,dge.tissue)
-=======
-nb0=50
-resultx1.tissue = getx1.rnaseq(nb0,b0, dge.tissue)
->>>>>>> da6dabc5622e35b9fed80bedbbcd472d3a979555
 ```
 
 We can then compare the predicted cell type mixture against the known cell type mixture of the tissue sample. In this case, the known cell types are obtained from a blood cell count differential where lymphocytes are a combination of T cells and B cells. The correlation per sample is obtained with `getcorr`.
 
-<<<<<<< HEAD
 ```{r warning=FALSE, message=FALSE}
-=======
-```{r }
->>>>>>> da6dabc5622e35b9fed80bedbbcd472d3a979555
 x1 = cbind(lymph=resultx1.tissue$x1$tissuefBcell+resultx1.tissue$x1$tissuefTcell, 
  mono = resultx1.tissue$x1$tissuefMonocytes, gran = resultx1.tissue$x1$tissuefGranulocytes)
 x2 = as.matrix(cbc.rnaseq/100)
@@ -141,7 +93,6 @@ cr = getcorr(x1,x2)
 plot(cr, ylim=c(0,1), ylab="Correlation")
 ```
 
-<<<<<<< HEAD
 ## Example using single cell RNA sequencing data
 
 Load data for single cell RNA sequencing.
@@ -211,17 +162,11 @@ methmat = getmethmat(filnames=c(file1,file2), sample.id=c("sample1","sample2"))
 ```
 
 Load the example data, `data_celltypes_rrbs`, for individual cell types (T cells, B cells, monocytes, granulocytes). This includes: 1) `celltypes.rrbs`, cell types in data, 2) `design.rrbs`, design matrix, 3) `methmat`, methylation matrix, and 4) `sample.id.rrbs`, sample IDs.
-=======
-## Example using bisulfite sequencing data
-
-First load the example data for individual cell types (T cells, B cells, monocytes, granulocytes).
->>>>>>> da6dabc5622e35b9fed80bedbbcd472d3a979555
 
 ```{r}
 data("data_celltypes_rrbs") 
 ```
 
-<<<<<<< HEAD
 Compute the projection matrix, `b0`. A predetermined signature CpG set can be specified in `sigg`. Default for `sigg` is NULL.
 ```{r results="hide"}
 set.seed(1234)
@@ -235,18 +180,6 @@ Alternatively, we can specify the top `NB0` genes to use.
 
 ```{r}
 resultx1 = getx1.biseq(NB0=250,b0,methmat,sample.id.rrbs,celltypes.rrbs)
-=======
-Then compute projection matrix, `b0`.
-```{r results="hide"}
-set.seed(1234)
-b0 = getb0.biseq(methmat, design.rrbs)
-```
-
-We will use the top 250 CpG sites for the signature CpG set. First, we obtain the predicted cell type mixture, `resultx1`, using the deconvolution method.
-```{r}
-nb0=250
-resultx1 = getx1.biseq(nb0,b0,methmat,sample.id.rrbs,celltypes.rrbs)
->>>>>>> da6dabc5622e35b9fed80bedbbcd472d3a979555
 ```
 
 Then we compare our predicted results with the actual cell types, `x2`.
@@ -256,12 +189,8 @@ cr=getcorr(resultx1$x1,x2)
 plot(cr, ylim=c(0,1), ylab="Correlation")
 ```
 
-<<<<<<< HEAD
 We can now load the data for the whole tissue samples, `data_tissue_rrbs`. This includes: 1) `methmat.tissue`, methylation matrix for whole blood, 2) `sample.id.tissue`, sample IDs, and 3)`cbc.rrbs`, matrix of actual cell composition.
 
-=======
-We can now load the data for the whole tissue samples.
->>>>>>> da6dabc5622e35b9fed80bedbbcd472d3a979555
 ```{r}
 data("data_tissue_rrbs")
 ```
@@ -269,22 +198,12 @@ data("data_tissue_rrbs")
 Using the 250 signature CpGs from the projection matrix, `b0`, we compute the predicted cell type mixture for the whole tissue sample, `resultx1.tissue`.
 
 ```{r}
-<<<<<<< HEAD
 resultx1.tissue = getx1.biseq(NB0=250,b0,methmat.tissue,sample.id.tissue,celltypes.rrbs)
 ```
 
 We can then compare the predicted cell type mixture against the known cell type mixture of the tissue sample. In this case, the known cell types are obtained from a blood differential cell count where lymphocytes are a combination of T cells and B cells. The correlation per sample is obtained with `getcorr`.
 
 ```{r warning=FALSE, message=FALSE}
-=======
-nb0=250
-resultx1.tissue = getx1.biseq(nb0,b0,methmat.tissue,sample.id.tissue,celltypes.rrbs)
-```
-
-We can then compare the predicted cell type mixture against the known cell type mixture of the tissue sample. In this case, the known cell types are obtained from a blood cell count differential where lymphocytes are a combination of T cells and B cells. The correlation per sample is obtained with `getcorr`.
-
-```{r}
->>>>>>> da6dabc5622e35b9fed80bedbbcd472d3a979555
 x1 = cbind(lymph=resultx1.tissue$x1[,1]+resultx1.tissue$x1[,2], mono = resultx1.tissue$x1[,3], gran = resultx1.tissue$x1[,4])
 x2 = as.matrix(cbc.rrbs/100)
 cr = getcorr(x1,x2)
@@ -292,8 +211,4 @@ plot(cr, ylim=c(0,1), ylab="Correlation")
 ```
 
 
-<<<<<<< HEAD
 ## References
-=======
-
->>>>>>> da6dabc5622e35b9fed80bedbbcd472d3a979555
