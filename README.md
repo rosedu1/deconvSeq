@@ -17,8 +17,7 @@ Note: Windows users need [Rtools](http://www.murdoch-sutherland.com/Rtools/) and
 
 ## Help
 
-Vignette: 
-http://github.com/rosedu1/deconvSeq/inst/doc/deconvSeq_vignette.html
+Vignette: [HTML Vignette](http://github.com/rosedu1/deconvSeq/inst/doc/deconvSeq_vignette.html)
  
 ## Contact
 

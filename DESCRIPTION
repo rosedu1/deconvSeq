@@ -6,7 +6,7 @@ Authors@R: c(person("Rose", "Du", email = "rdu@bwh.harvard.edu", role = c("aut",
 Author: Rose Du [aut, cre], Vince Carey [aut]
 Maintainer: Rose Du <rdu@bwh.harvard.edu>
 Description: Uses cell type deconvolution for RNA sequencing and bisulfite sequencing data to obtain cell type mixture in tissues.
-Depends: R (>= 3.3.0) 
+Depends: R (>= 3.3.0)
 biocViews: 
 Imports: edgeR,  MASS,  stats, lme4, simpleSingleCell,  SingleCellExperiment, biomaRt, Rsolnp, psych, Rmisc, methylKit, scater, scran, SummarizedExperiment, utils
 License: GPL-3
