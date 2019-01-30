@@ -12,7 +12,16 @@ library(devtools)
 install_github("rosedu1/deconvSeq")
 ```
 
-Note: Windows users need [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and [devtools](http://CRAN.R-project.org/package=devtools) to install from GitHub.
+Note: 
+1) Windows users need [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and [devtools](http://CRAN.R-project.org/package=devtools) to install from GitHub.
+2) Windows users need to install **simpleSingleCell** separately from the source as there is no binary for Windows
+
+```r
+source("http://bioconductor.org/biocLite.R")
+biocLite("simpleSingleCell", type = "source")
+```
+
+3) If some packages do not install, set repositories to include both CRAN and Bioconductor with `setRepositories(ind=c(1:4))`.
 
 
 ## Help
