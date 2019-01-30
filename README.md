@@ -12,7 +12,7 @@ library(devtools)
 install_github("rosedu1/deconvSeq")
 ```
 
-Note: Windows users need [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and [devtools](http://CRAN.R-project.org/package=devtools) to install this way.
+Note: Windows users need [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and [devtools](http://CRAN.R-project.org/package=devtools) to install from GitHub.
 
 
 ## Help
@@ -23,5 +23,4 @@ Vignette: [HTML Vignette](https://rosedu1.github.io/deconvSeq/deconvSeq_vignette
 
 You are welcome to:
 * submit suggestions and bug-reports at: <https://github.com/rosedu1/deconvSeq/issues>
-* send a pull request on: <https://github.com/rosedu1/deconvSeq/>
 * email: <rdu@bwh.harvard.edu>
