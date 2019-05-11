@@ -13,7 +13,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(fig.width = 4.5, fig.height = 3.5)
 ```
-# Introduction
+## Introduction
 
 `deconvSeq` is an R package for performing cell type deconvolution of whole tissue using bulk RNA sequencing (RNAseq) or bisulfite sequencing data such as reduced representation bisulfite sequencing (RRBS). Required input includes the sequencing data for the individual cell types and the whole tissue of interest.
 
@@ -95,7 +95,7 @@ plot(cr, ylim=c(0,1), ylab="Correlation")
 
 ## Example using single cell RNA sequencing data
 
-Load data for single cell RNA sequencing.
+Load data for single cell RNA sequencing (scRNAseq).
 
 ```{r}
 data("data_scrnaseq") 
@@ -149,7 +149,8 @@ x2 = as.data.frame(design_s.sc,row.names=sample.id_s.sc)
 sc = getcorr(resultx1_s.sc$x1,x2)
 getmeancorr(sc)
 ```
-
+### Using single cell RNA sequencing for the projection matrix and bulk RNA sequencing for the tissue 
+`deconvSeq` can be applied to scRNAseq data to obtain the projection matrix, `b0.sc`, and subsequently used on bulk RNAseq data for the tissue by using `getx1.rnaseq`.
 
 ## Example using bisulfite sequencing data
 

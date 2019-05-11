@@ -12,7 +12,7 @@
 
 <meta name="author" content="Rose Du, Vince Carey, Scott T. Weiss" />
 
-<meta name="date" content="2019-01-29" />
+<meta name="date" content="2019-05-11" />
 
 <title>deconvSeq: Deconvolution of cell mixture distribution in sequencing data</title>
 
@@ -70,15 +70,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">deconvSeq: Deconvolution of cell mixture distribution in sequencing data</h1>
 <h4 class="author"><em>Rose Du, Vince Carey, Scott T. Weiss</em></h4>
-<h4 class="date"><em>2019-01-29</em></h4>
+<h4 class="date"><em>2019-05-11</em></h4>
 
 
 
-<div id="introduction" class="section level1">
-<h1>Introduction</h1>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
 <p><code>deconvSeq</code> is an R package for performing cell type deconvolution of whole tissue using bulk RNA sequencing (RNAseq) or bisulfite sequencing data such as reduced representation bisulfite sequencing (RRBS). Required input includes the sequencing data for the individual cell types and the whole tissue of interest.</p>
 <p>In this vignette, we will demonstrate how to perform the analysis starting from a toy read count matrix for RNAseq (output from HTSeq <span class="citation">(Anders, Pyl, and Huber 2015)</span>) and from a methylation count matrix (output from BSMAP <span class="citation">(Xi and Li 2009)</span>). Data included with the package are: for RNA sequencing (data_celltypes_rnaseq and data_tissue_rnaseq), reduced representation bisulfite sequencing (data_celltypes_rrbs and data_tissue_rrbs), and single cell RNA sequencing (data_scrnaseq).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(deconvSeq)</code></pre></div>
+</div>
 <div id="example-using-rna-sequencing-data" class="section level2">
 <h2>Example using RNA sequencing data</h2>
 <p>Read counts files for individual samples such as the output from HTSeq <span class="citation">(Anders, Pyl, and Huber 2015)</span> are loaded and combined into a single read count matrix, <code>countmat</code>, where the rows are the genes and the columns are the samples. The files are provided for illustrative purposes only and are not used subsequently in this vignette.</p>
@@ -116,7 +117,7 @@ cr =<span class="st"> </span><span class="kw">getcorr</span>(x1,x2)
 </div>
 <div id="example-using-single-cell-rna-sequencing-data" class="section level2">
 <h2>Example using single cell RNA sequencing data</h2>
-<p>Load data for single cell RNA sequencing.</p>
+<p>Load data for single cell RNA sequencing (scRNAseq).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;data_scrnaseq&quot;</span>) </code></pre></div>
 <p>This includes the count matrix, <code>cnts.scrnaseq</code>, which is a count matrix with gene symbols for rows and samples for columns. There are two cell types, HuTreg and HuTconv. The sample names indicate the cell type. Single cell RNA sequencing data are sparse and technically noisy and therefore require additional quality control measures. We implement the filtering via <code>simpleSingleCell</code> <span class="citation">(Lun and Marioni 2016)</span>. Cells with log-transformed number of expressed genes or log-library sizes that are more than 3 median absolute deviations below the median and cells with mitochondrial proportions higher than 3 median absolute deviations above the median are removed. The user can specify the average count threhold where low-abundance genes with an average count below the threshold are removed. Finally, cells can be filtered for a specific cell cycle phase (G1, G2M, or S).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cnts.sc =<span class="st"> </span><span class="kw">prep_scrnaseq</span>(cnts.scrnaseq, <span class="dt">genenametype =</span> <span class="st">&quot;hgnc_symbol&quot;</span>,<span class="dt">cellcycle=</span><span class="ot">NULL</span>,<span class="dt">count.threshold=</span><span class="fl">0.05</span>)</code></pre></div>
@@ -151,6 +152,10 @@ sc =<span class="st"> </span><span class="kw">getcorr</span>(resultx1_s.sc<span 
 <span class="kw">getmeancorr</span>(sc)</code></pre></div>
 <pre><code>##     upper      mean     lower 
 ## 0.9998906 0.9985868 0.9818854</code></pre>
+<div id="using-single-cell-rna-sequencing-for-the-projection-matrix-and-bulk-rna-sequencing-for-the-tissue" class="section level3">
+<h3>Using single cell RNA sequencing for the projection matrix and bulk RNA sequencing for the tissue</h3>
+<p><code>deconvSeq</code> can be applied to scRNAseq data to obtain the projection matrix, <code>b0.sc</code>, and subsequently used on bulk RNAseq data for the tissue by using <code>getx1.rnaseq</code>.</p>
+</div>
 </div>
 <div id="example-using-bisulfite-sequencing-data" class="section level2">
 <h2>Example using bisulfite sequencing data</h2>
@@ -198,7 +203,6 @@ cr =<span class="st"> </span><span class="kw">getcorr</span>(x1,x2)
 </div>
 <div id="ref-xi09">
 <p>Xi, Y., and W. Li. 2009. “BSMAP: Whole Genome Bisulfite Sequence Mapping Program.” Journal Article. <em>BMC Bioinformatics</em> 10: 232. doi:<a href="https://doi.org/10.1186/1471-2105-10-232">10.1186/1471-2105-10-232</a>.</p>
-</div>
 </div>
 </div>
 </div>
