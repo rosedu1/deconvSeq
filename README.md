@@ -27,7 +27,6 @@ biocLite("simpleSingleCell", type = "source")
 ## Help
 
 Vignette: [HTML Vignette](https://rosedu1.github.io/deconvSeq/deconvSeq_vignette.html)
-Vignette (https://github.com/rosedu1/deconvSeq/inst/doc/deconvSeq_vignette.md)
 
 ## Contact
 
