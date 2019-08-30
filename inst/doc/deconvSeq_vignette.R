@@ -84,6 +84,24 @@ x2 = as.data.frame(design_s.sc,row.names=sample.id_s.sc)
 sc = getcorr(resultx1_s.sc$x1,x2)
 getmeancorr(sc)
 
+## ----results="hide"------------------------------------------------------
+#scRNAseq data
+singlecelldata = cnts.sc.G1.train 
+#known single cell types of the scRNAseq data
+celltypes.sc = tissue.sc 
+#tissue data with unknown cell types
+tissuedata = cnts.sc.G1.valid 
+#obtain design matrix from scRNAseq data 
+design.singlecell = model.matrix(~-1+as.factor(celltypes.sc))
+colnames(design.singlecell) = levels(as.factor(celltypes.sc))
+rownames(design.singlecell) = names(celltypes.sc)
+#obtain projection matrix
+dge.singlecell = getdge(singlecelldata,design.singlecell,ncpm.min=1, nsamp.min=4, method="bin.loess")
+b0.singlecell = getb0.rnaseq(dge.singlecell, design.singlecell, ncpm.min=1, nsamp.min=4)
+#obtain cell type proportions in tissue
+dge_tissue.sc = getdge(tissuedata, NULL, ncpm.min=1, nsamp.min=4, method="bin.loess")
+resultx1_tissue.sc = getx1.rnaseq(NB0=1500,b0.singlecell, dge_tissue.sc)
+
 ## ------------------------------------------------------------------------
 file1 = system.file("extdata","sample1_methratio.txt", package="deconvSeq")
 file2 = system.file("extdata","sample2_methratio.txt", package="deconvSeq")

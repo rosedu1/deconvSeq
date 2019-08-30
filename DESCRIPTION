@@ -1,7 +1,7 @@
 Package: deconvSeq
 Title: Cell Type Deconvolution for RNA Sequencing and Bisulfite Sequencing
-Version: 0.1.1
-Date: 2019-05-11
+Version: 0.1.2
+Date: 2019-08-30
 Authors@R: c(person("Rose", "Du", email = "rdu@bwh.harvard.edu", role = c("aut", "cre")),person("Vince", "Carey", email = "stvjc@channing.harvard.edu", role = c("aut")))
 Author: Rose Du [aut, cre], Vince Carey [aut]
 Maintainer: Rose Du <rdu@bwh.harvard.edu>

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Rose Du, Vince Carey, Scott T. Weiss" />
 
-<meta name="date" content="2019-05-11" />
+<meta name="date" content="2019-08-30" />
 
 <title>deconvSeq: Deconvolution of cell mixture distribution in sequencing data</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">deconvSeq: Deconvolution of cell mixture distribution in sequencing data</h1>
 <h4 class="author"><em>Rose Du, Vince Carey, Scott T. Weiss</em></h4>
-<h4 class="date"><em>2019-05-11</em></h4>
+<h4 class="date"><em>2019-08-30</em></h4>
 
 
 
@@ -154,7 +154,23 @@ sc =<span class="st"> </span><span class="kw">getcorr</span>(resultx1_s.sc<span 
 ## 0.9998906 0.9985868 0.9818854</code></pre>
 <div id="using-single-cell-rna-sequencing-for-the-projection-matrix-and-bulk-rna-sequencing-for-the-tissue" class="section level3">
 <h3>Using single cell RNA sequencing for the projection matrix and bulk RNA sequencing for the tissue</h3>
-<p><code>deconvSeq</code> can be applied to scRNAseq data to obtain the projection matrix, <code>b0.sc</code>, and subsequently used on bulk RNAseq data for the tissue by using <code>getx1.rnaseq</code>.</p>
+<p><code>deconvSeq</code> can be applied to scRNAseq data to obtain the projection matrix, <code>b0.sc</code>, and subsequently used on bulk RNAseq data for the tissue by using <code>getx1.rnaseq</code>. Here we illustrate this by treating the count data from the validation set as bulk tissue with unknown cell types.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#scRNAseq data</span>
+singlecelldata =<span class="st"> </span>cnts.sc.G1.train 
+<span class="co">#known single cell types of the scRNAseq data</span>
+celltypes.sc =<span class="st"> </span>tissue.sc 
+<span class="co">#tissue data with unknown cell types</span>
+tissuedata =<span class="st"> </span>cnts.sc.G1.valid 
+<span class="co">#obtain design matrix from scRNAseq data </span>
+design.singlecell =<span class="st"> </span><span class="kw">model.matrix</span>(<span class="op">~-</span><span class="dv">1</span><span class="op">+</span><span class="kw">as.factor</span>(celltypes.sc))
+<span class="kw">colnames</span>(design.singlecell) =<span class="st"> </span><span class="kw">levels</span>(<span class="kw">as.factor</span>(celltypes.sc))
+<span class="kw">rownames</span>(design.singlecell) =<span class="st"> </span><span class="kw">names</span>(celltypes.sc)
+<span class="co">#obtain projection matrix</span>
+dge.singlecell =<span class="st"> </span><span class="kw">getdge</span>(singlecelldata,design.singlecell,<span class="dt">ncpm.min=</span><span class="dv">1</span>, <span class="dt">nsamp.min=</span><span class="dv">4</span>, <span class="dt">method=</span><span class="st">&quot;bin.loess&quot;</span>)
+b0.singlecell =<span class="st"> </span><span class="kw">getb0.rnaseq</span>(dge.singlecell, design.singlecell, <span class="dt">ncpm.min=</span><span class="dv">1</span>, <span class="dt">nsamp.min=</span><span class="dv">4</span>)
+<span class="co">#obtain cell type proportions in tissue</span>
+dge_tissue.sc =<span class="st"> </span><span class="kw">getdge</span>(tissuedata, <span class="ot">NULL</span>, <span class="dt">ncpm.min=</span><span class="dv">1</span>, <span class="dt">nsamp.min=</span><span class="dv">4</span>, <span class="dt">method=</span><span class="st">&quot;bin.loess&quot;</span>)
+resultx1_tissue.sc =<span class="st"> </span><span class="kw">getx1.rnaseq</span>(<span class="dt">NB0=</span><span class="dv">1500</span>,b0.singlecell, dge_tissue.sc)</code></pre></div>
 </div>
 </div>
 <div id="example-using-bisulfite-sequencing-data" class="section level2">
