@@ -174,12 +174,12 @@ resultx1_tissue.sc = getx1.rnaseq(NB0=1500,b0.singlecell, dge_tissue.sc)
 
 ## Example using bisulfite sequencing data
 
-For RRBS data, BSMAP [@xi09] can be used to do the alignment. Output from BSmap has the following columns: chr, pos, strand, context, ratio, eff_CT_count, C_count, CT_count, rev_G_count, rev_GA_count, CI_lower, CI_upper. Load the toy input files and convert them to a methylation matrix, `methmat`, with `getmethmat`. The files are provided for illustrative purposes only and are not used subsequently in this vignette.
+For RRBS data, BSMAP [@xi09] or Bismark [@krueger11] can be used to do the alignment. Output from BSmap has the following columns: chr, pos, strand, context, ratio, eff_CT_count, C_count, CT_count, rev_G_count, rev_GA_count, CI_lower, CI_upper. Coverage output from Bismark has the following columns: chrBase, chr, base, strand, coverage, freqC, freqT. Indicate file type as "bsmap" or "bismark". Load the toy input files and convert them to a methylation matrix, `methmat`, with `getmethmat`. The files are provided for illustrative purposes only and are not used subsequently in this vignette.
 
 ```{r}
 file1 = system.file("extdata","sample1_methratio.txt", package="deconvSeq")
 file2 = system.file("extdata","sample2_methratio.txt", package="deconvSeq")
-methmat = getmethmat(filnames=c(file1,file2), sample.id=c("sample1","sample2"))
+methmat = getmethmat(filnames=c(file1,file2), sample.id=c("sample1","sample2"), filtype="bsmap")
 ```
 
 Load the example data, `data_celltypes_rrbs`, for individual cell types (T cells, B cells, monocytes, granulocytes). This includes: 1) `celltypes.rrbs`, cell types in data, 2) `design.rrbs`, design matrix, 3) `methmat`, methylation matrix, and 4) `sample.id.rrbs`, sample IDs.

@@ -144,7 +144,9 @@ NULL
 #FUNCTIONS
 #==================================================
 
-#' takes count matrix for individual samples (e.g. output of HTSeq output). Format: first column is Ensembl gene id, second column is count, no header. Removes genes with all 0 reads and rows that are not Ensembl gene IDs. Output is a count matrix where rows are genes and columns are samples.
+#' Combine count matrix for individual samples
+#'
+#' Takes count matrix for individual samples (e.g. output of HTSeq output). Format: first column is Ensembl gene id, second column is count, no header. Removes genes with all 0 reads and rows that are not Ensembl gene IDs. Output is a count matrix where rows are genes and columns are samples.
 #' Sample input files:  sample_genecounts1.txt, sample_genecounts2.txt
 #' @param filnames filenames of individual samples
 #' @param sample.id sample IDs 
@@ -185,7 +187,7 @@ getrnamat <- function(filnames, sample.id){
 
 
 
-#' obtain EdgeR DGE object from count matrix
+#' Obtain EdgeR DGE object from count matrix
 #' @param countmat a matrix of counts with rows corresponding to 
 #'   genes and columns to samples
 #' @param design output of model.matrix
@@ -418,41 +420,70 @@ getx1.rnaseq<-function(NB0="top_bonferroni", resultb0, dge_s, MAXITER=1000, x0=N
 
 
 
-#' makes methylation count matrix using output from BSMAP. Removes sites with 0 counts in all samples.
-#' Input file \(from BSMAP\) has columns: chromosome, position, strand, context, ratio, eff_CT_count, C_count, CT_count, rev_G_count, rev_GA_count, CI_lower, CI_upper
-#' Sample input files: sample1_methratio.txt, sample1_mehtratio.txt
-#' Extract CpGs from input files and output in filname.CpG
-#' Add "Chr" to chromosome name and output in filname.CpG_chr
+#' Makes methylation count matrix 
+#'
+#' Makes methylation count matrix using output from either BSMAP or Bismark. 
+#'
+#' Removes sites with 0 counts in all samples.
+#'
+#' Input file from BSMAP has columns: chromosome, position, strand, context, ratio, eff_CT_count, C_count, CT_count, rev_G_count, rev_GA_count, CI_lower, CI_upper.
+#'
+#' Input file from Bismark coverage for CG only has columns "chrBase","chr","base","strand","coverage","freqC","freqT"
+#'
+#' Sample input files from BSMAP: sample1_methratio.txt, sample1_mehtratio.txt
+#'
+#' For BSMAP input files, extracts CpGs and output in filname.CpG in the current working directory.
+#' Adds "Chr" to chromosome name and output in filname.CpG_chr.
 #' @param filnames input filenames
 #' @param sample.id sample IDs
+#' @param filtype "bsmap", "bismark". Default is "bsmap"
 #' @return methylation count matrix where rows are CpG sites and columns are: chromosome, start, end, strand, number of Ts+Cs for sample 1, number of Cs for sample 1, number of Ts for sample 1, ....
 #' @examples
 #'  file1 = system.file("extdata","sample1_methratio.txt", package="deconvSeq")
 #'  file2 = system.file("extdata","sample2_methratio.txt", package="deconvSeq")
-#' methmat = getmethmat(filnames=c(file1,file2), sample.id=c("sample1","sample2"))
+#' methmat = getmethmat(filnames=c(file1,file2), sample.id=c("sample1","sample2"), filtype="bsmap")
 #' @export
-getmethmat <- function(filnames, sample.id){
-	WD = getwd()
-	for(i in 1:length(filnames)){
-		system(paste0("awk '($4~/^CG/)' ",filnames[i]," > ",WD,"/", basename(filnames[i]),".CpG"))
-	}
+getmethmat <- function(filnames, sample.id, filtype="bsmap"){
 	
-	awkfil = system.file("extdata","convert_chr_name_grch38.awk", package="deconvSeq")
-	nfil=c()
-	for(i in 1:length(filnames)){
-		system(paste0("awk -f ", awkfil,"  ",basename(filnames[i]),".CpG"," > ", WD,"/" ,basename(filnames[i]),".CpG_chr"))
-		nfil=c(nfil,paste0(basename(filnames[i]),".CpG_chr"))
+	if(filtype=="bsmap"){
+		WD = getwd()
+		for(i in 1:length(filnames)){
+			system(paste0("awk '($4~/^CG/)' ",filnames[i]," > ",WD,"/", basename(filnames[i]),".CpG"))
+		}
+	
+		awkfil = system.file("extdata","convert_chr_name_grch38.awk", package="deconvSeq")
+		nfil=c()
+		for(i in 1:length(filnames)){
+			system(paste0("awk -f ", awkfil,"  ",basename(filnames[i]),".CpG"," > ", WD,"/" ,basename(filnames[i]),".CpG_chr"))
+			nfil=c(nfil,paste0(basename(filnames[i]),".CpG_chr"))
+		}
+
+		#parameters for assembly and context are for methRead and do not affect final count matrix
+		obj=methRead(as.list(nfil), sample.id=as.list(sample.id), assembly="grch38",header=FALSE, context="CpG",resolution="base", pipeline=list(fraction=TRUE,chr.col=1,start.col=2,end.col=2,coverage.col=6,strand.col=3, freqC.col=5), treatment=rep(0,length(filnames)))
+		
+	} else if (filtype=="bismark"){
+		
+		obj=methRead(as.list(filnames), sample.id=as.list(sample.id), assembly="grch38",header=TRUE, context="CpG",resolution="base", treatment=rep(0,length(filnames)),pipeline="bismarkCoverage")
+
+		
+	} else {
+		
+		cat("Wrong file type. Filetypes are 'bsmap' or 'bismark'\n")
+		return()
 	}
 
-	#parameters for assembly and context are for methRead and do not affect final count matrix
-	obj=methRead(as.list(nfil), sample.id=as.list(sample.id), assembly="grch38",header=FALSE, context="CpG",resolution="base", pipeline=list(fraction=TRUE,chr.col=1,start.col=2,end.col=2,coverage.col=6,strand.col=3, freqC.col=5), treatment=rep(0,length(filnames)))
 	meth=unite(obj,min.per.group=NULL)
 	meth.data = getData(meth)
 	
 	#remove rows in which all Ts are 0 or all Cs are 0 
-	meth.filter = meth.data[-which(rowSums(meth.data[,meth@numTs.index])==0 | rowSums(meth.data[,meth@numCs.index])==0),]
+	#meth.filter = meth.data[-which(rowSums(meth.data[,meth@numTs.index])==0 | rowSums(meth.data[,meth@numCs.index])==0),]
+	if(length(which(rowSums(meth.data[,meth@numCs.index])==0))==0 & length(which(rowSums(meth.data[,meth@numTs.index])==0))){
+		meth.filter = meth.data[-which(rowSums(meth.data[,meth@numTs.index])==0 | rowSums(meth.data[,meth@numCs.index])==0),]
+	} else {
+		meth.filter = meth.data
+	}
 
-	cat("files *.CpG and *.CpG_chr are written to current working directory\n")
+	if(filtype=="bsmap") cat("files *.CpG and *.CpG_chr are written to current working directory\n")
 	
 	return(meth.filter)
 }
@@ -551,7 +582,8 @@ getx1.biseq <- function(NB0="top_bonferroni",b0,methmat,sample.id,celltypes,MAXI
 
 
 
-
+#' Quality control of scRNAseq
+#'
 #' do quality control of scRNAseq based on library size, feature counts, chrM, cell cycle phase, and count threshold
 #' @param scrna_mat count matrix  for single cell RNAseq
 #' @param genenametype nomenclature for genes in count matrix: "hgnc_symbol" or "ensembl_id"
@@ -609,10 +641,17 @@ prep_scrnaseq <- function(scrna_mat, genenametype = "hgnc_symbol",cellcycle=NULL
 	#library(scater)
 		
 	mito <- which(gl$chromosome_name=="M")
-	sce <- calculateQCMetrics(sce, feature_controls=list(Mt=mito))
-	libsize.drop <- isOutlier(sce$total_counts, nmads=3, type="lower",log=TRUE)
-	feature.drop <- isOutlier(sce$total_features_by_counts, nmads=3, type="lower",log=TRUE,)
-	mt.drop = isOutlier(sce$pct_counts_Mt, nmads=3, type="higher")
+	#update defunct functions calculateQCMetrics to perCellQCMetrics
+	#sce <- calculateQCMetrics(sce, feature_controls=list(Mt=mito))
+	#libsize.drop <- isOutlier(sce$total_counts, nmads=3, type="lower",log=TRUE)
+	#feature.drop <- isOutlier(sce$total_features_by_counts, nmads=3, type="lower",log=TRUE,)
+	#mt.drop = isOutlier(sce$pct_counts_Mt, nmads=3, type="higher")
+	
+	sce.percell = perCellQCMetrics(sce,subsets=list(Mt=mito))
+	libsize.drop <- isOutlier(sce.percell[,"sum"], nmads=3, type="lower",log=TRUE)
+	feature.drop <- isOutlier(sce.percell[,"detected"], nmads=3, type="lower",log=TRUE,)
+	mt.drop = isOutlier(sce.percell[,"subsets_Mt_percent"], nmads=3, type="higher")
+
 	keep <- !(libsize.drop | feature.drop | mt.drop)
 	#data.frame(ByLibSize=sum(libsize.drop), ByFeature=sum(feature.drop), ByMt=sum(mt.drop), Remaining=sum(keep))
 	sce$PassQC <- keep
@@ -631,7 +670,9 @@ prep_scrnaseq <- function(scrna_mat, genenametype = "hgnc_symbol",cellcycle=NULL
 	}
 
 	if(!is.null(count.threshold)){
-		ave.counts <- calcAverage(sce, use_size_factors=FALSE)
+		#replaced defunct calcAverage with calculateAverage
+		#ave.counts <- calcAverage(sce, use_size_factors=FALSE)
+		ave.counts <- calculateAverage(sce, size_factors=NULL)
 		#remove genes with average counts less than count.threshold
 		counts.keep <- ave.counts >= count.threshold
 		sce <- sce[counts.keep,]
@@ -650,6 +691,8 @@ prep_scrnaseq <- function(scrna_mat, genenametype = "hgnc_symbol",cellcycle=NULL
 
 #cellcycle is G1, G2M or S
 #species is human or mouse
+#' Cell cycle filter
+#'
 #' filter for cells with particular cell cycle phase: "G1", "G2M", or "S"
 #' @param scrna_mat count matrix  for single cell RNAseq with ensembl gene IDs
 #' @param cellcycle filter for specific cell cycle phase: "G1", "G2M", or "S". Default is NULL, for no cell cycle phase filtering.
@@ -676,6 +719,8 @@ getcellcycle <- function(scrna_mat, cellcycle="G1",species="human"){
 }
 
 
+#' Mean Correlation
+#'
 #' get mean correlation by first doing Fisher transform to z, averaging z, then reverse transform back
 #' do quality control of scRNAseq based on library size, feature counts, chrM, cell cycle phase, and count threshold
 #' @param rho correlations
