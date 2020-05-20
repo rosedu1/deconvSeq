@@ -12,6 +12,21 @@ countmat = getrnamat(filnames=c(file1,file2),sample.id=c("sample1","sample2"))
 ## -----------------------------------------------------------------------------
 data("data_celltypes_rnaseq") 
 
+## -----------------------------------------------------------------------------
+
+celltypes=c("Bcells","Tcells","Monocytes","Neutrophils")
+#cell types of single cell type RNAseq or methylation files
+file.celltypes = c(rep("Monocytes",4),rep("Tcells",4), rep("Bcells",3), rep("Neutrophils",13))
+design=data.frame(Bcells=ifelse(file.celltypes=="Bcells",1,0),Tcells=ifelse(file.celltypes=="Tcells",1,0),Monocytes=ifelse(file.celltypes=="Monocytes",1,0),Neutrophils=ifelse(file.celltypes=="Neutrophils",1,0))
+
+
+## -----------------------------------------------------------------------------
+
+celltypes=c("Bcells","Tcells","Monocytes","Neutrophils")
+file.celltypes = factor(c(rep("Monocytes",4),rep("Tcells",4), rep("Bcells",3), rep("Neutrophils",13)), levels = celltypes)
+design <- model.matrix(~-1+file.celltypes) 
+
+
 ## ----results="hide"-----------------------------------------------------------
 dge.celltypes = getdge(cnts.celltypes, design.rnaseq, ncpm.min=1, nsamp.min=4)
 
@@ -102,13 +117,28 @@ b0.singlecell = getb0.rnaseq(dge.singlecell, design.singlecell, ncpm.min=1, nsam
 dge_tissue.sc = getdge(tissuedata, NULL, ncpm.min=1, nsamp.min=4, method="bin.loess")
 resultx1_tissue.sc = getx1.rnaseq(NB0=1500,b0.singlecell, dge_tissue.sc)
 
-## -----------------------------------------------------------------------------
+## ---- message=FALSE, results=FALSE--------------------------------------------
 file1 = system.file("extdata","sample1_methratio.txt", package="deconvSeq")
 file2 = system.file("extdata","sample2_methratio.txt", package="deconvSeq")
 methmat = getmethmat(filnames=c(file1,file2), sample.id=c("sample1","sample2"), filtype="bsmap")
 
 ## -----------------------------------------------------------------------------
 data("data_celltypes_rrbs") 
+
+## -----------------------------------------------------------------------------
+
+celltypes=c("Bcells","Tcells","Monocytes","Neutrophils")
+#cell types of single cell type RNAseq or methylation files
+file.celltypes = c(rep("Monocytes",4),rep("Tcells",4), rep("Bcells",3), rep("Neutrophils",13))
+design=data.frame(Bcells=ifelse(file.celltypes=="Bcells",1,0),Tcells=ifelse(file.celltypes=="Tcells",1,0),Monocytes=ifelse(file.celltypes=="Monocytes",1,0),Neutrophils=ifelse(file.celltypes=="Neutrophils",1,0))
+
+
+## -----------------------------------------------------------------------------
+
+celltypes=c("Bcells","Tcells","Monocytes","Neutrophils")
+file.celltypes = factor(c(rep("Monocytes",4),rep("Tcells",4), rep("Bcells",3), rep("Neutrophils",13)), levels = celltypes)
+design <- model.matrix(~-1+file.celltypes) 
+
 
 ## ----results="hide"-----------------------------------------------------------
 set.seed(1234)

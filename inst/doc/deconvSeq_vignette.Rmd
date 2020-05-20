@@ -33,8 +33,29 @@ countmat = getrnamat(filnames=c(file1,file2),sample.id=c("sample1","sample2"))
 
 Load the example data, `data_celltypes_rnaseq`, for individual cell types (T cells, B cells, monocytes, granulocytes). This includes 1) `cnts.celltypes`, count matrix for the individual cell types, 2) `design.rnaseq`, design matrix for `cnts.celltypes`, 3) `dge.celltypes`, DGEList (EdgeR, [@robinson10]) object derived from `cnts.celltypes`, and 4) `sample.id.rnaseq`, sample IDs which are column names for `cnts.celltypes`.
 
+
 ```{r}
 data("data_celltypes_rnaseq") 
+```
+
+The design matrix can be obtained by creating a dataframe or using `model.matrix`. For example,
+
+```{r}
+
+celltypes=c("Bcells","Tcells","Monocytes","Neutrophils")
+#cell types of single cell type RNAseq or methylation files
+file.celltypes = c(rep("Monocytes",4),rep("Tcells",4), rep("Bcells",3), rep("Neutrophils",13))
+design=data.frame(Bcells=ifelse(file.celltypes=="Bcells",1,0),Tcells=ifelse(file.celltypes=="Tcells",1,0),Monocytes=ifelse(file.celltypes=="Monocytes",1,0),Neutrophils=ifelse(file.celltypes=="Neutrophils",1,0))
+
+```
+or
+
+```{r}
+
+celltypes=c("Bcells","Tcells","Monocytes","Neutrophils")
+file.celltypes = factor(c(rep("Monocytes",4),rep("Tcells",4), rep("Bcells",3), rep("Neutrophils",13)), levels = celltypes)
+design <- model.matrix(~-1+file.celltypes) 
+
 ```
 
 Create `DGEList` object, `dge.celltypes`, from count matrix, `cnts.celltypes`.
@@ -176,7 +197,7 @@ resultx1_tissue.sc = getx1.rnaseq(NB0=1500,b0.singlecell, dge_tissue.sc)
 
 For RRBS data, BSMAP [@xi09] or Bismark [@krueger11] can be used to do the alignment. Output from BSmap has the following columns: chr, pos, strand, context, ratio, eff_CT_count, C_count, CT_count, rev_G_count, rev_GA_count, CI_lower, CI_upper. Coverage output from Bismark has the following columns: chrBase, chr, base, strand, coverage, freqC, freqT. Indicate file type as "bsmap" or "bismark". Load the toy input files and convert them to a methylation matrix, `methmat`, with `getmethmat`. The files are provided for illustrative purposes only and are not used subsequently in this vignette.
 
-```{r}
+```{r, message=FALSE, results=FALSE}
 file1 = system.file("extdata","sample1_methratio.txt", package="deconvSeq")
 file2 = system.file("extdata","sample2_methratio.txt", package="deconvSeq")
 methmat = getmethmat(filnames=c(file1,file2), sample.id=c("sample1","sample2"), filtype="bsmap")
@@ -186,6 +207,26 @@ Load the example data, `data_celltypes_rrbs`, for individual cell types (T cells
 
 ```{r}
 data("data_celltypes_rrbs") 
+```
+
+The design matrix can be obtained by creating a dataframe or using `model.matrix`. For example,
+
+```{r}
+
+celltypes=c("Bcells","Tcells","Monocytes","Neutrophils")
+#cell types of single cell type RNAseq or methylation files
+file.celltypes = c(rep("Monocytes",4),rep("Tcells",4), rep("Bcells",3), rep("Neutrophils",13))
+design=data.frame(Bcells=ifelse(file.celltypes=="Bcells",1,0),Tcells=ifelse(file.celltypes=="Tcells",1,0),Monocytes=ifelse(file.celltypes=="Monocytes",1,0),Neutrophils=ifelse(file.celltypes=="Neutrophils",1,0))
+
+```
+or
+
+```{r}
+
+celltypes=c("Bcells","Tcells","Monocytes","Neutrophils")
+file.celltypes = factor(c(rep("Monocytes",4),rep("Tcells",4), rep("Bcells",3), rep("Neutrophils",13)), levels = celltypes)
+design <- model.matrix(~-1+file.celltypes) 
+
 ```
 
 Compute the projection matrix, `b0`. A predetermined signature CpG set can be specified in `sigg`. Default for `sigg` is NULL.
