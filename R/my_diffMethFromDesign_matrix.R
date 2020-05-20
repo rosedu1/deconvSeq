@@ -166,7 +166,7 @@ my_diffMethFromDesign_matrix<-function(cur_methmat, cur_design, cur_formula){
 	
 	
 	#get length of res[[i]]
-	if(class(res)=="list"){
+	if(class(res)[1]=="list"){
 		#if there is an NA (botherror=1 or bothererror.0=1) as res then this becomes a list
 		lres=0
 		i=1

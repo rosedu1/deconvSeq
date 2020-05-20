@@ -41,6 +41,8 @@ Vignette: [HTML Vignette](https://rosedu1.github.io/deconvSeq_vignette.html)
 ## Version notes
 5/20/2020 version 0.1.3 1) in withDoc.R, function prep_scrnaseq, replaced defunct functions calculateQCMetrics with perCellQCMetrics and replaced defunct calcAverage with calculateAverage. 2) in function getmethmat, added filetypes to include output from Bismark as well as BSMAP, 3) in function getmethmat, added condition to not filter if there are no cases where all Cs or all Ts are 0.
 
+5/20/20 version 0.1.4 Updated mydiffMethFromDesign_matrix.R, line 169, class(res)=="list" changed to class(res)[1]=="list". This does not affect the functionality of the package.
+
 ## Contact
 
 You are welcome to:
