@@ -4,12 +4,22 @@ R package for performing cell type deconvolution of bulk RNA sequencing, single 
 
 ## Installation
 
-The user can download the [tar ball](https://github.com/rosedu1/deconvSeq/tree/master/tarball/current/), and run `R CMD INSTALL` on it, or use the **devtools** package to install from GitHub:
+The user can download the [tar ball](https://github.com/rosedu1/deconvSeq/tree/master/tarball/current/), untar the tarball, and use the **devtools** package to install dependencies then run `R CMD INSTALL` on the command line:
+
+```r
+#in R
+library(devtools)
+install_deps("/PATH/TO/deconvSeq",dependencies=TRUE)
+#on command line
+R CMD INSTALL deconvSeq_0.1.3.tar.gz
+```
+
+Alternatively, use the **devtools** package to install from GitHub:
 
 ```r
 ## devtools is required
 library(devtools)
-install_github("rosedu1/deconvSeq")
+install_github("rosedu1/deconvSeq", dependencies=TRUE)
 ```
 
 Note: 
