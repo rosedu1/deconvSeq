@@ -23,7 +23,7 @@ install_github("rosedu1/deconvSeq", dependencies=TRUE)
 ```
 
 Note: 
-1) Windows users need [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and [devtools](http://CRAN.R-project.org/package=devtools) to install from GitHub.
+1) Windows users need [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and [devtools](https://CRAN.R-project.org/package=devtools) to install from GitHub.
 2) Windows users need to install **simpleSingleCell** separately from the source as there is no binary for Windows
 
 ```r
@@ -36,7 +36,7 @@ biocLite("simpleSingleCell", type = "source")
 
 ## Help
 
-Vignette: [HTML Vignette](https://rosedu1.github.io/deconvSeq/deconvSeq_vignette.html)
+Vignette: [HTML Vignette](https://rosedu1.github.io/deconvSeq_vignette.html)
 
 ## Version notes
 5/20/2020 version 0.1.3 1) in withDoc.R, function prep_scrnaseq, replaced defunct functions calculateQCMetrics with perCellQCMetrics and replaced defunct calcAverage with calculateAverage. 2) in function getmethmat, added filetypes to include output from Bismark as well as BSMAP, 3) in function getmethmat, added condition to not filter if there are no cases where all Cs or all Ts are 0.
