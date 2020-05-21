@@ -48,8 +48,6 @@ NULL
 #'
 #' \itemize{
 #'	\item cnts.scrnaseq count matrix for full scRNAseq dataset
-#' \item cnts.sc count matrix for scRNAseq dataset after filtering using prep_scrnaseq(cnts.scrnaseq, genenametype = "hgnc_symbol",cellcycle=NULL, count.threshold=0.05)
-#' \item cnts.sc.G1 count matrix for scRNAseq after filtering cnts.sc for cells in G1 phase of cell cycle
 #' }
 #' @name data_scrnaseq
 #' @docType data
@@ -132,12 +130,6 @@ NULL
 
 #' Count matrix for single cell RNAseq
 "cnts.scrnaseq"
-
-#' Count matrix for single cell RNAseq after filtering for count threshold of 0.05
-"cnts.sc"
-
-#' Count matrix for single cell RNAseq after filtering cnts.sc for G1 cell cycle phase
-"cnts.sc.G1"
 
 
 #==================================================
@@ -622,7 +614,7 @@ prep_scrnaseq <- function(scrna_mat, genenametype = "hgnc_symbol",cellcycle=NULL
 
 
 
-	} else {
+	} else if(genenametype=="ensembl_id"){
 		genelocation = getBM(attributes=c("hgnc_symbol", "chromosome_name", "start_position", "end_position","strand","ensembl_gene_id"), filters="ensembl_gene_id", values=list(rownames(scrna_mat)), mart=ensembl)
 		kg = which(duplicated(genelocation$ensembl_gene_id))
 		genelocation = genelocation[-kg,]
@@ -632,6 +624,9 @@ prep_scrnaseq <- function(scrna_mat, genenametype = "hgnc_symbol",cellcycle=NULL
 		
 		scrna_mat.en= scrna_mat
 
+	} else {
+		cat('genenametype should be "hgnc_symbol" or "ensembl_id"\n')
+		return()
 	}
 
 	sce <- SingleCellExperiment(list(counts=scrna_mat.en))  #counts must be matrix
@@ -780,10 +775,10 @@ getmeancorr <- function(rho){
 #' set.seed(1234)
 #' data("data_scrnaseq") 
 #' #Do quality control. cnts.sc and cnts.sc.G1 are included in data_scrnaseq.
-#' #cnts.sc = prep_scrnaseq(cnts.scrnaseq, genenametype = "hgnc_symbol",cellcycle=NULL,
-#' #count.threshold=0.05)
+#'  cnts.sc = prep_scrnaseq(cnts.scrnaseq, genenametype = "hgnc_symbol",cellcycle=NULL,
+#'  count.threshold=0.05)
 #' #Filter for cell cycle phase "G1"
-#' #cnts.sc.G1 = getcellcycle(cnts.sc,"G1")
+#'  cnts.sc.G1 = getcellcycle(cnts.sc,"G1")
 #' #divide data into a training set and a validation set
 #'	cnts.sc.G1.train = cnts.sc.G1[,c(which(substr(colnames(cnts.sc.G1),3,6)=="Tcon")[1:250],
 #' which(substr(colnames(cnts.sc.G1),3,6)=="Treg")[1:150])]

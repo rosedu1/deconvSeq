@@ -12,7 +12,7 @@
 
 <meta name="author" content="Rose Du, Vince Carey, Scott T. Weiss" />
 
-<meta name="date" content="2020-05-20" />
+<meta name="date" content="2020-05-21" />
 
 <title>deconvSeq: Deconvolution of cell mixture distribution in sequencing data</title>
 
@@ -315,7 +315,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">deconvSeq: Deconvolution of cell mixture distribution in sequencing data</h1>
 <h4 class="author">Rose Du, Vince Carey, Scott T. Weiss</h4>
-<h4 class="date">2020-05-20</h4>
+<h4 class="date">2020-05-21</h4>
 
 
 
@@ -373,7 +373,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h2>Example using single cell RNA sequencing data</h2>
 <p>Load data for single cell RNA sequencing (scRNAseq).</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">data</span>(<span class="st">&quot;data_scrnaseq&quot;</span>) </span></code></pre></div>
-<p>This includes the count matrix, <code>cnts.scrnaseq</code>, which is a count matrix with gene symbols for rows and samples for columns. There are two cell types, HuTreg and HuTconv. The sample names indicate the cell type. Single cell RNA sequencing data are sparse and technically noisy and therefore require additional quality control measures. We implement the filtering via <code>simpleSingleCell</code> <span class="citation">(Lun and Marioni 2016)</span>. Cells with log-transformed number of expressed genes or log-library sizes that are more than 3 median absolute deviations below the median and cells with mitochondrial proportions higher than 3 median absolute deviations above the median are removed. The user can specify the average count threhold where low-abundance genes with an average count below the threshold are removed. Finally, cells can be filtered for a specific cell cycle phase (G1, G2M, or S).</p>
+<p>This includes the count matrix, <code>cnts.scrnaseq</code>, which is a count matrix with gene symbols for rows and samples for columns. There are two cell types, HuTreg and HuTconv. The sample names indicate the cell type. Single cell RNA sequencing data are sparse and technically noisy and therefore require additional quality control measures. We implement the filtering via <code>simpleSingleCell</code> <span class="citation">(Lun and Marioni 2016)</span>. Cells with log-transformed number of expressed genes or log-library sizes that are more than 3 median absolute deviations below the median and cells with mitochondrial proportions higher than 3 median absolute deviations above the median are removed. The user can specify the average count threhold where low-abundance genes with an average count below the threshold are removed. Finally, cells can be filtered for a specific cell cycle phase (G1, G2M, or S). The gene name type can be either HGNC symbols or Ensembl IDs.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>cnts.sc =<span class="st"> </span><span class="kw">prep_scrnaseq</span>(cnts.scrnaseq, <span class="dt">genenametype =</span> <span class="st">&quot;hgnc_symbol&quot;</span>,<span class="dt">cellcycle=</span><span class="ot">NULL</span>,<span class="dt">count.threshold=</span><span class="fl">0.05</span>)</span></code></pre></div>
 <p>Here we filter for cell cycle phase “G1”.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>cnts.sc.G1 =<span class="st"> </span><span class="kw">getcellcycle</span>(cnts.sc,<span class="st">&quot;G1&quot;</span>)</span></code></pre></div>
