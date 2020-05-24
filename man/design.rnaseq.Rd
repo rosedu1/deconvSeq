@@ -5,7 +5,7 @@
 \alias{design.rnaseq}
 \title{Design matrix for cell types (RNAseq)}
 \format{
-An object of class \code{matrix} with 64 rows and 4 columns.
+An object of class \code{matrix} (inherits from \code{array}) with 64 rows and 4 columns.
 }
 \usage{
 design.rnaseq

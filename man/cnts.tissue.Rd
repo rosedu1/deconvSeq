@@ -5,7 +5,7 @@
 \alias{cnts.tissue}
 \title{Count matrix for tissue (RNAseq)}
 \format{
-An object of class \code{matrix} with 500 rows and 35 columns.
+An object of class \code{matrix} (inherits from \code{array}) with 500 rows and 35 columns.
 }
 \usage{
 cnts.tissue

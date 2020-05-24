@@ -12,7 +12,7 @@
 
 <meta name="author" content="Rose Du, Vince Carey, Scott T. Weiss" />
 
-<meta name="date" content="2020-05-21" />
+<meta name="date" content="2020-05-24" />
 
 <title>deconvSeq: Deconvolution of cell mixture distribution in sequencing data</title>
 
@@ -315,7 +315,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">deconvSeq: Deconvolution of cell mixture distribution in sequencing data</h1>
 <h4 class="author">Rose Du, Vince Carey, Scott T. Weiss</h4>
-<h4 class="date">2020-05-21</h4>
+<h4 class="date">2020-05-24</h4>
 
 
 
@@ -373,7 +373,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h2>Example using single cell RNA sequencing data</h2>
 <p>Load data for single cell RNA sequencing (scRNAseq).</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">data</span>(<span class="st">&quot;data_scrnaseq&quot;</span>) </span></code></pre></div>
-<p>This includes the count matrix, <code>cnts.scrnaseq</code>, which is a count matrix with gene symbols for rows and samples for columns. There are two cell types, HuTreg and HuTconv. The sample names indicate the cell type. Single cell RNA sequencing data are sparse and technically noisy and therefore require additional quality control measures. We implement the filtering via <code>simpleSingleCell</code> <span class="citation">(Lun and Marioni 2016)</span>. Cells with log-transformed number of expressed genes or log-library sizes that are more than 3 median absolute deviations below the median and cells with mitochondrial proportions higher than 3 median absolute deviations above the median are removed. The user can specify the average count threhold where low-abundance genes with an average count below the threshold are removed. Finally, cells can be filtered for a specific cell cycle phase (G1, G2M, or S). The gene name type can be either HGNC symbols or Ensembl IDs.</p>
+<p>This includes the count matrix, <code>cnts.scrnaseq</code>, which is a count matrix with gene symbols for rows and samples for columns. There are two cell types, HuTreg and HuTconv. The sample names indicate the cell type. Single cell RNA sequencing data are sparse and technically noisy and therefore require additional quality control measures. We implement the filtering per Lun et al. <span class="citation">(Lun and Marioni 2016)</span>. Cells with log-transformed number of expressed genes or log-library sizes that are more than 3 median absolute deviations below the median and cells with mitochondrial proportions higher than 3 median absolute deviations above the median are removed. The user can specify the average count threhold where low-abundance genes with an average count below the threshold are removed. Finally, cells can be filtered for a specific cell cycle phase (G1, G2M, or S). The gene name type can be either HGNC symbols or Ensembl IDs.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>cnts.sc =<span class="st"> </span><span class="kw">prep_scrnaseq</span>(cnts.scrnaseq, <span class="dt">genenametype =</span> <span class="st">&quot;hgnc_symbol&quot;</span>,<span class="dt">cellcycle=</span><span class="ot">NULL</span>,<span class="dt">count.threshold=</span><span class="fl">0.05</span>)</span></code></pre></div>
 <p>Here we filter for cell cycle phase “G1”.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>cnts.sc.G1 =<span class="st"> </span><span class="kw">getcellcycle</span>(cnts.sc,<span class="st">&quot;G1&quot;</span>)</span></code></pre></div>
@@ -430,9 +430,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="example-using-bisulfite-sequencing-data" class="section level2">
 <h2>Example using bisulfite sequencing data</h2>
 <p>For RRBS data, BSMAP <span class="citation">(Xi and Li 2009)</span> or Bismark <span class="citation">(Krueger and Andrews 2011)</span> can be used to do the alignment. Output from BSmap has the following columns: chr, pos, strand, context, ratio, eff_CT_count, C_count, CT_count, rev_G_count, rev_GA_count, CI_lower, CI_upper. Coverage output from Bismark has the following columns: chrBase, chr, base, strand, coverage, freqC, freqT. Indicate file type as “bsmap” or “bismark”. Load the toy input files and convert them to a methylation matrix, <code>methmat</code>, with <code>getmethmat</code>. The files are provided for illustrative purposes only and are not used subsequently in this vignette.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>file1 =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>,<span class="st">&quot;sample1_methratio.txt&quot;</span>, <span class="dt">package=</span><span class="st">&quot;deconvSeq&quot;</span>)</span>
-<span id="cb23-2"><a href="#cb23-2"></a>file2 =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>,<span class="st">&quot;sample2_methratio.txt&quot;</span>, <span class="dt">package=</span><span class="st">&quot;deconvSeq&quot;</span>)</span>
-<span id="cb23-3"><a href="#cb23-3"></a>methmat =<span class="st"> </span><span class="kw">getmethmat</span>(<span class="dt">filnames=</span><span class="kw">c</span>(file1,file2), <span class="dt">sample.id=</span><span class="kw">c</span>(<span class="st">&quot;sample1&quot;</span>,<span class="st">&quot;sample2&quot;</span>), <span class="dt">filtype=</span><span class="st">&quot;bsmap&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co">#file1 = system.file(&quot;extdata&quot;,&quot;sample1_methratio.txt&quot;, package=&quot;deconvSeq&quot;)</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="co">#file2 = system.file(&quot;extdata&quot;,&quot;sample2_methratio.txt&quot;, package=&quot;deconvSeq&quot;)</span></span>
+<span id="cb23-3"><a href="#cb23-3"></a><span class="co">#methmat = getmethmat(filnames=c(file1,file2), sample.id=c(&quot;sample1&quot;,&quot;sample2&quot;), filtype=&quot;bsmap&quot;)</span></span></code></pre></div>
 <p>Load the example data, <code>data_celltypes_rrbs</code>, for individual cell types (T cells, B cells, monocytes, granulocytes). This includes: 1) <code>celltypes.rrbs</code>, cell types in data, 2) <code>design.rrbs</code>, design matrix, 3) <code>methmat</code>, methylation matrix, and 4) <code>sample.id.rrbs</code>, sample IDs.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="kw">data</span>(<span class="st">&quot;data_celltypes_rrbs&quot;</span>) </span></code></pre></div>
 <p>The design matrix can be obtained by creating a dataframe or using <code>model.matrix</code>. For example,</p>

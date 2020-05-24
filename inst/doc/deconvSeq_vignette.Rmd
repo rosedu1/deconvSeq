@@ -19,6 +19,7 @@ knitr::opts_chunk$set(fig.width = 4.5, fig.height = 3.5)
 
 In this vignette, we will demonstrate how to perform the analysis starting from a toy read count matrix for RNAseq (output from HTSeq [@anders15]) and from a methylation count matrix (output from BSMAP [@xi09]).  Data included with the package are: for RNA sequencing (data_celltypes_rnaseq and data_tissue_rnaseq), reduced representation bisulfite sequencing (data_celltypes_rrbs and data_tissue_rrbs), and single cell RNA sequencing (data_scrnaseq).
 
+
 ```{r, message = FALSE}
 library(deconvSeq)
 ```
@@ -121,7 +122,7 @@ Load data for single cell RNA sequencing (scRNAseq).
 ```{r}
 data("data_scrnaseq") 
 ```
-This includes the count matrix, `cnts.scrnaseq`, which is a count matrix with gene symbols for rows and samples for columns. There are two cell types, HuTreg and HuTconv. The sample names indicate the cell type. Single cell RNA sequencing data are sparse and technically noisy and therefore require additional quality control measures. We implement the filtering via `simpleSingleCell` [@lun16]. Cells with log-transformed number of expressed genes or log-library sizes that are more than 3 median absolute deviations below the median and cells with mitochondrial proportions higher than 3 median absolute deviations above the median are removed. The user can specify the average count threhold where low-abundance genes with an average count below the threshold are removed. Finally, cells can be filtered for a specific cell cycle phase (G1, G2M, or S). The gene name type can be either HGNC symbols or Ensembl IDs.
+This includes the count matrix, `cnts.scrnaseq`, which is a count matrix with gene symbols for rows and samples for columns. There are two cell types, HuTreg and HuTconv. The sample names indicate the cell type. Single cell RNA sequencing data are sparse and technically noisy and therefore require additional quality control measures. We implement the filtering per Lun et al. [@lun16]. Cells with log-transformed number of expressed genes or log-library sizes that are more than 3 median absolute deviations below the median and cells with mitochondrial proportions higher than 3 median absolute deviations above the median are removed. The user can specify the average count threhold where low-abundance genes with an average count below the threshold are removed. Finally, cells can be filtered for a specific cell cycle phase (G1, G2M, or S). The gene name type can be either HGNC symbols or Ensembl IDs.
 
 ```{r warning=FALSE, results='hide',message=FALSE}
 cnts.sc = prep_scrnaseq(cnts.scrnaseq, genenametype = "hgnc_symbol",cellcycle=NULL,count.threshold=0.05)
@@ -198,9 +199,9 @@ resultx1_tissue.sc = getx1.rnaseq(NB0=1500,b0.singlecell, dge_tissue.sc)
 For RRBS data, BSMAP [@xi09] or Bismark [@krueger11] can be used to do the alignment. Output from BSmap has the following columns: chr, pos, strand, context, ratio, eff_CT_count, C_count, CT_count, rev_G_count, rev_GA_count, CI_lower, CI_upper. Coverage output from Bismark has the following columns: chrBase, chr, base, strand, coverage, freqC, freqT. Indicate file type as "bsmap" or "bismark". Load the toy input files and convert them to a methylation matrix, `methmat`, with `getmethmat`. The files are provided for illustrative purposes only and are not used subsequently in this vignette.
 
 ```{r, message=FALSE, results=FALSE}
-file1 = system.file("extdata","sample1_methratio.txt", package="deconvSeq")
-file2 = system.file("extdata","sample2_methratio.txt", package="deconvSeq")
-methmat = getmethmat(filnames=c(file1,file2), sample.id=c("sample1","sample2"), filtype="bsmap")
+#file1 = system.file("extdata","sample1_methratio.txt", package="deconvSeq")
+#file2 = system.file("extdata","sample2_methratio.txt", package="deconvSeq")
+#methmat = getmethmat(filnames=c(file1,file2), sample.id=c("sample1","sample2"), filtype="bsmap")
 ```
 
 Load the example data, `data_celltypes_rrbs`, for individual cell types (T cells, B cells, monocytes, granulocytes). This includes: 1) `celltypes.rrbs`, cell types in data, 2) `design.rrbs`, design matrix, 3) `methmat`, methylation matrix, and 4) `sample.id.rrbs`, sample IDs.

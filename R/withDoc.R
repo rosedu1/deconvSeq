@@ -1,7 +1,7 @@
 #' @rawNamespace import(SingleCellExperiment, except = c(cpm,weights))
 #' @rawNamespace import(SummarizedExperiment, except = c(merge,as.data.frame,start,end))
 #' @rawNamespace import(scater, except = c(filter,plotMDS))
-#'@import edgeR stats methylKit simpleSingleCell   scran 
+#'@import edgeR stats methylKit scran 
 #'@importFrom MASS glm.nb
 #'@importFrom lme4 glmer
 #'@importFrom Rsolnp solnp
@@ -431,9 +431,9 @@ getx1.rnaseq<-function(NB0="top_bonferroni", resultb0, dge_s, MAXITER=1000, x0=N
 #' @param filtype "bsmap", "bismark". Default is "bsmap"
 #' @return methylation count matrix where rows are CpG sites and columns are: chromosome, start, end, strand, number of Ts+Cs for sample 1, number of Cs for sample 1, number of Ts for sample 1, ....
 #' @examples
-#'  file1 = system.file("extdata","sample1_methratio.txt", package="deconvSeq")
-#'  file2 = system.file("extdata","sample2_methratio.txt", package="deconvSeq")
-#' methmat = getmethmat(filnames=c(file1,file2), sample.id=c("sample1","sample2"), filtype="bsmap")
+#'  #file1 = system.file("extdata","sample1_methratio.txt", package="deconvSeq")
+#'  #file2 = system.file("extdata","sample2_methratio.txt", package="deconvSeq")
+#'  #methmat = getmethmat(filnames=c(file1,file2), sample.id=c("sample1","sample2"), filtype="bsmap")
 #' @export
 getmethmat <- function(filnames, sample.id, filtype="bsmap"){
 	

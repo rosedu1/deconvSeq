@@ -48,10 +48,10 @@ getmeancorr(sc)
 set.seed(1234)
 data("data_scrnaseq") 
 #Do quality control. cnts.sc and cnts.sc.G1 are included in data_scrnaseq.
-#cnts.sc = prep_scrnaseq(cnts.scrnaseq, genenametype = "hgnc_symbol",cellcycle=NULL,
-#count.threshold=0.05)
+ cnts.sc = prep_scrnaseq(cnts.scrnaseq, genenametype = "hgnc_symbol",cellcycle=NULL,
+ count.threshold=0.05)
 #Filter for cell cycle phase "G1"
-#cnts.sc.G1 = getcellcycle(cnts.sc,"G1")
+ cnts.sc.G1 = getcellcycle(cnts.sc,"G1")
 #divide data into a training set and a validation set
 cnts.sc.G1.train = cnts.sc.G1[,c(which(substr(colnames(cnts.sc.G1),3,6)=="Tcon")[1:250],
 which(substr(colnames(cnts.sc.G1),3,6)=="Treg")[1:150])]

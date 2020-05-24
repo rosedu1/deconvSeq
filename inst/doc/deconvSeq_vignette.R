@@ -118,9 +118,9 @@ dge_tissue.sc = getdge(tissuedata, NULL, ncpm.min=1, nsamp.min=4, method="bin.lo
 resultx1_tissue.sc = getx1.rnaseq(NB0=1500,b0.singlecell, dge_tissue.sc)
 
 ## ---- message=FALSE, results=FALSE--------------------------------------------
-file1 = system.file("extdata","sample1_methratio.txt", package="deconvSeq")
-file2 = system.file("extdata","sample2_methratio.txt", package="deconvSeq")
-methmat = getmethmat(filnames=c(file1,file2), sample.id=c("sample1","sample2"), filtype="bsmap")
+#file1 = system.file("extdata","sample1_methratio.txt", package="deconvSeq")
+#file2 = system.file("extdata","sample2_methratio.txt", package="deconvSeq")
+#methmat = getmethmat(filnames=c(file1,file2), sample.id=c("sample1","sample2"), filtype="bsmap")
 
 ## -----------------------------------------------------------------------------
 data("data_celltypes_rrbs") 

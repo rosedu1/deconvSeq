@@ -32,7 +32,7 @@ For BSMAP input files, extracts CpGs and output in filname.CpG in the current wo
 Adds "Chr" to chromosome name and output in filname.CpG_chr.
 }
 \examples{
- file1 = system.file("extdata","sample1_methratio.txt", package="deconvSeq")
- file2 = system.file("extdata","sample2_methratio.txt", package="deconvSeq")
-methmat = getmethmat(filnames=c(file1,file2), sample.id=c("sample1","sample2"), filtype="bsmap")
+ #file1 = system.file("extdata","sample1_methratio.txt", package="deconvSeq")
+ #file2 = system.file("extdata","sample2_methratio.txt", package="deconvSeq")
+ #methmat = getmethmat(filnames=c(file1,file2), sample.id=c("sample1","sample2"), filtype="bsmap")
 }

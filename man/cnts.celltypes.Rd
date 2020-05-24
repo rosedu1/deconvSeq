@@ -5,7 +5,7 @@
 \alias{cnts.celltypes}
 \title{Count matrix for cell types (RNAseq)}
 \format{
-An object of class \code{matrix} with 500 rows and 64 columns.
+An object of class \code{matrix} (inherits from \code{array}) with 500 rows and 64 columns.
 }
 \usage{
 cnts.celltypes
