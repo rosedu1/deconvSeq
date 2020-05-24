@@ -11,7 +11,7 @@ The user can download the [tar ball](https://github.com/rosedu1/deconvSeq/tree/m
 library(devtools)
 install_deps("/PATH/TO/deconvSeq",dependencies=TRUE)
 #on command line
-R CMD INSTALL deconvSeq_0.2.1.tar.gz
+R CMD INSTALL deconvSeq_VERSION_NUMBER.tar.gz
 ```
 
 Alternatively, use the **devtools** package to install from GitHub:
