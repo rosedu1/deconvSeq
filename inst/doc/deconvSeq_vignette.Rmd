@@ -15,7 +15,7 @@ knitr::opts_chunk$set(fig.width = 4.5, fig.height = 3.5)
 ```
 ## Introduction
 
-`deconvSeq` is an R package for performing cell type deconvolution of whole tissue using bulk RNA sequencing (RNAseq) or bisulfite sequencing data such as reduced representation bisulfite sequencing (RRBS). Required input includes the sequencing data for the individual cell types and the whole tissue of interest.
+`deconvSeq` [@du19] is an R package for performing cell type deconvolution of whole tissue using bulk RNA sequencing (RNAseq) or bisulfite sequencing data such as reduced representation bisulfite sequencing (RRBS). Required input includes the sequencing data for the individual cell types and the whole tissue of interest.
 
 In this vignette, we will demonstrate how to perform the analysis starting from a toy read count matrix for RNAseq (output from HTSeq [@anders15]) and from a methylation count matrix (output from BSMAP [@xi09]).  Data included with the package are: for RNA sequencing (data_celltypes_rnaseq and data_tissue_rnaseq), reduced representation bisulfite sequencing (data_celltypes_rrbs and data_tissue_rrbs), and single cell RNA sequencing (data_scrnaseq).
 
@@ -27,9 +27,9 @@ library(deconvSeq)
 ## Example using RNA sequencing data
 Read counts files for individual samples such as the output from HTSeq [@anders15] are loaded and combined into a single read count matrix, `countmat`,  where the rows are the genes and the columns are the samples. The files are provided for illustrative purposes only and are not used subsequently in this vignette.
 ```{r}
-file1 = system.file("extdata","sample1_genecounts.txt", package="deconvSeq")
-file2 = system.file("extdata","sample2_genecounts.txt", package="deconvSeq")
-countmat = getrnamat(filnames=c(file1,file2),sample.id=c("sample1","sample2"))
+#file1 = system.file("extdata","sample1_genecounts.txt", package="deconvSeq")
+#file2 = system.file("extdata","sample2_genecounts.txt", package="deconvSeq")
+#countmat = getrnamat(filnames=c(file1,file2),sample.id=c("sample1","sample2"))
 ```
 
 Load the example data, `data_celltypes_rnaseq`, for individual cell types (T cells, B cells, monocytes, granulocytes). This includes 1) `cnts.celltypes`, count matrix for the individual cell types, 2) `design.rnaseq`, design matrix for `cnts.celltypes`, 3) `dge.celltypes`, DGEList (EdgeR, [@robinson10]) object derived from `cnts.celltypes`, and 4) `sample.id.rnaseq`, sample IDs which are column names for `cnts.celltypes`.
@@ -122,15 +122,15 @@ Load data for single cell RNA sequencing (scRNAseq).
 ```{r}
 data("data_scrnaseq") 
 ```
-This includes the count matrix, `cnts.scrnaseq`, which is a count matrix with gene symbols for rows and samples for columns. There are two cell types, HuTreg and HuTconv. The sample names indicate the cell type. Single cell RNA sequencing data are sparse and technically noisy and therefore require additional quality control measures. We implement the filtering per Lun et al. [@lun16]. Cells with log-transformed number of expressed genes or log-library sizes that are more than 3 median absolute deviations below the median and cells with mitochondrial proportions higher than 3 median absolute deviations above the median are removed. The user can specify the average count threhold where low-abundance genes with an average count below the threshold are removed. Finally, cells can be filtered for a specific cell cycle phase (G1, G2M, or S). The gene name type can be either HGNC symbols or Ensembl IDs.
+This includes the count matrix, `cnts.scrnaseq`, which is a count matrix with gene symbols for rows and samples for columns. There are two cell types, HuTreg and HuTconv. The sample names indicate the cell type. Single cell RNA sequencing data are sparse and technically noisy and therefore require additional quality control measures. We implement the filtering per Lun et al. [@lun16]. Cells with log-transformed number of expressed genes or log-library sizes that are more than 3 median absolute deviations below the median and cells with mitochondrial proportions higher than 3 median absolute deviations above the median are removed. The user can specify the average count threhold where low-abundance genes with an average count below the threshold are removed. Finally, cells can be filtered for a specific cell cycle phase (G1, G2M, or S). The gene name type can be either HGNC symbols or Ensembl IDs. Other results have been precompiled in this portion of the vignette where the code has been commented out and included in `data_scrnaseq`. 
 
 ```{r warning=FALSE, results='hide',message=FALSE}
-cnts.sc = prep_scrnaseq(cnts.scrnaseq, genenametype = "hgnc_symbol",cellcycle=NULL,count.threshold=0.05)
+#cnts.sc = prep_scrnaseq(cnts.scrnaseq, genenametype = "hgnc_symbol",cellcycle=NULL,count.threshold=0.05)
 ```
 Here we filter for cell cycle phase "G1".
 
 ```{r}
-cnts.sc.G1 = getcellcycle(cnts.sc,"G1")
+#cnts.sc.G1 = getcellcycle(cnts.sc,"G1")
 ```
 We can divide the data into a training set and a validation set.
 
@@ -148,8 +148,8 @@ design.sc = design.sc[colnames(cnts.sc.G1.train),]
 From the count matrix, `cnts.sc.G1.train`, obtain the DGEList object, `dge.sc`, and the projection matrix, `b0.sc`.
 
 ```{r results="hide"}
-dge.sc = getdge(cnts.sc.G1.train,design.sc,ncpm.min=1, nsamp.min=4, method="bin.loess")
-b0.sc = getb0.rnaseq(dge.sc, design.sc, ncpm.min=1, nsamp.min=4)
+#dge.sc = getdge(cnts.sc.G1.train,design.sc,ncpm.min=1, nsamp.min=4, method="bin.loess")
+#b0.sc = getb0.rnaseq(dge.sc, design.sc, ncpm.min=1, nsamp.min=4)
 ```
 
 Apply the projection matrix to the validation set, `cnts.sc.G1.valid`.
@@ -176,21 +176,21 @@ getmeancorr(sc)
 `deconvSeq` can be applied to scRNAseq data to obtain the projection matrix, `b0.sc`, and subsequently used on bulk RNAseq data for the tissue by using `getx1.rnaseq`. Here we illustrate this by treating the count data from the validation set as bulk tissue with unknown cell types.
 ```{r results="hide"}
 #scRNAseq data
-singlecelldata = cnts.sc.G1.train 
+#singlecelldata = cnts.sc.G1.train 
 #known single cell types of the scRNAseq data
-celltypes.sc = tissue.sc 
+#celltypes.sc = tissue.sc 
 #tissue data with unknown cell types
-tissuedata = cnts.sc.G1.valid 
+#tissuedata = cnts.sc.G1.valid 
 #obtain design matrix from scRNAseq data 
-design.singlecell = model.matrix(~-1+as.factor(celltypes.sc))
-colnames(design.singlecell) = levels(as.factor(celltypes.sc))
-rownames(design.singlecell) = names(celltypes.sc)
+#design.singlecell = model.matrix(~-1+as.factor(celltypes.sc))
+#colnames(design.singlecell) = levels(as.factor(celltypes.sc))
+#rownames(design.singlecell) = names(celltypes.sc)
 #obtain projection matrix
-dge.singlecell = getdge(singlecelldata,design.singlecell,ncpm.min=1, nsamp.min=4, method="bin.loess")
-b0.singlecell = getb0.rnaseq(dge.singlecell, design.singlecell, ncpm.min=1, nsamp.min=4)
+#dge.singlecell = getdge(singlecelldata,design.singlecell,ncpm.min=1, nsamp.min=4, method="bin.loess")
+#b0.singlecell = getb0.rnaseq(dge.singlecell, design.singlecell, ncpm.min=1, nsamp.min=4)
 #obtain cell type proportions in tissue
-dge_tissue.sc = getdge(tissuedata, NULL, ncpm.min=1, nsamp.min=4, method="bin.loess")
-resultx1_tissue.sc = getx1.rnaseq(NB0=1500,b0.singlecell, dge_tissue.sc)
+#dge_tissue.sc = getdge(tissuedata, NULL, ncpm.min=1, nsamp.min=4, method="bin.loess")
+#resultx1_tissue.sc = getx1.rnaseq(NB0=1500,b0.singlecell, dge_tissue.sc)
 ```
 
 

@@ -42,6 +42,10 @@ Vignette: [HTML Vignette](https://rosedu1.github.io/deconvSeq_vignette.html)
 
 5/25/20 version 0.2.2 1) Removed examples from getcorr
 
+5/25/20 version 0.2.3 1) Commented out time consuming portions of vignette and added precompiled data
+
+5/25/20 version 0.2.4 1) Added citation to vignette and package
+
 
 ## Citation
 Du R, Carey V, and Weiss ST. deconvSeq: deconvolution of cell mixture distribution in sequencing data, Bioinformatics, 35:5095-5102, 2019.

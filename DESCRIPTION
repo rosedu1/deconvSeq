@@ -1,11 +1,11 @@
 Package: deconvSeq
 Title: Cell Type Deconvolution for RNA Sequencing and Bisulfite Sequencing
-Version: 0.2.2
-Date: 2020-05-22
+Version: 0.2.4
+Date: 2020-05-25
 Authors@R: c(person("Rose", "Du", email = "rdu@bwh.harvard.edu", role = c("aut", "cre")),person("Vince", "Carey", email = "stvjc@channing.harvard.edu", role = c("aut")), person("Scott","Weiss", email = "restw@channing.harvard.edu", role = c("aut")))
 Author: Rose Du [aut, cre], Vince Carey [aut], Scott Weiss [aut]
 Maintainer: Rose Du <rdu@bwh.harvard.edu>
-Description: Uses cell type deconvolution for RNA sequencing and bisulfite sequencing data to obtain cell type mixture in tissues.
+Description: Uses cell type deconvolution for RNA sequencing and bisulfite sequencing data to obtain cell type mixture in tissues. Citation: Du R, Carey V, and Weiss ST (2019) <doi:10.1093/bioinformatics/btz444>.
 Depends: R (>= 3.3.0)
 biocViews: 
 Imports: edgeR,  MASS,  stats, lme4, biomaRt, Rsolnp, psych, Rmisc, methylKit,  SummarizedExperiment, utils, SingleCellExperiment, scater, scran

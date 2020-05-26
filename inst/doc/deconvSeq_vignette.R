@@ -5,9 +5,9 @@ knitr::opts_chunk$set(fig.width = 4.5, fig.height = 3.5)
 library(deconvSeq)
 
 ## -----------------------------------------------------------------------------
-file1 = system.file("extdata","sample1_genecounts.txt", package="deconvSeq")
-file2 = system.file("extdata","sample2_genecounts.txt", package="deconvSeq")
-countmat = getrnamat(filnames=c(file1,file2),sample.id=c("sample1","sample2"))
+#file1 = system.file("extdata","sample1_genecounts.txt", package="deconvSeq")
+#file2 = system.file("extdata","sample2_genecounts.txt", package="deconvSeq")
+#countmat = getrnamat(filnames=c(file1,file2),sample.id=c("sample1","sample2"))
 
 ## -----------------------------------------------------------------------------
 data("data_celltypes_rnaseq") 
@@ -63,10 +63,10 @@ plot(cr, ylim=c(0,1), ylab="Correlation")
 data("data_scrnaseq") 
 
 ## ----warning=FALSE, results='hide',message=FALSE------------------------------
-cnts.sc = prep_scrnaseq(cnts.scrnaseq, genenametype = "hgnc_symbol",cellcycle=NULL,count.threshold=0.05)
+#cnts.sc = prep_scrnaseq(cnts.scrnaseq, genenametype = "hgnc_symbol",cellcycle=NULL,count.threshold=0.05)
 
 ## -----------------------------------------------------------------------------
-cnts.sc.G1 = getcellcycle(cnts.sc,"G1")
+#cnts.sc.G1 = getcellcycle(cnts.sc,"G1")
 
 ## -----------------------------------------------------------------------------
 cnts.sc.G1.train = cnts.sc.G1[,c(which(substr(colnames(cnts.sc.G1),3,6)=="Tcon")[1:250],which(substr(colnames(cnts.sc.G1),3,6)=="Treg")[1:150])]
@@ -80,8 +80,8 @@ rownames(design.sc) = names(tissue.sc)
 design.sc = design.sc[colnames(cnts.sc.G1.train),]
 
 ## ----results="hide"-----------------------------------------------------------
-dge.sc = getdge(cnts.sc.G1.train,design.sc,ncpm.min=1, nsamp.min=4, method="bin.loess")
-b0.sc = getb0.rnaseq(dge.sc, design.sc, ncpm.min=1, nsamp.min=4)
+#dge.sc = getdge(cnts.sc.G1.train,design.sc,ncpm.min=1, nsamp.min=4, method="bin.loess")
+#b0.sc = getb0.rnaseq(dge.sc, design.sc, ncpm.min=1, nsamp.min=4)
 
 ## ----results="hide"-----------------------------------------------------------
 tissue_s.sc = substr(colnames(cnts.sc.G1.valid),3,6)
@@ -101,21 +101,21 @@ getmeancorr(sc)
 
 ## ----results="hide"-----------------------------------------------------------
 #scRNAseq data
-singlecelldata = cnts.sc.G1.train 
+#singlecelldata = cnts.sc.G1.train 
 #known single cell types of the scRNAseq data
-celltypes.sc = tissue.sc 
+#celltypes.sc = tissue.sc 
 #tissue data with unknown cell types
-tissuedata = cnts.sc.G1.valid 
+#tissuedata = cnts.sc.G1.valid 
 #obtain design matrix from scRNAseq data 
-design.singlecell = model.matrix(~-1+as.factor(celltypes.sc))
-colnames(design.singlecell) = levels(as.factor(celltypes.sc))
-rownames(design.singlecell) = names(celltypes.sc)
+#design.singlecell = model.matrix(~-1+as.factor(celltypes.sc))
+#colnames(design.singlecell) = levels(as.factor(celltypes.sc))
+#rownames(design.singlecell) = names(celltypes.sc)
 #obtain projection matrix
-dge.singlecell = getdge(singlecelldata,design.singlecell,ncpm.min=1, nsamp.min=4, method="bin.loess")
-b0.singlecell = getb0.rnaseq(dge.singlecell, design.singlecell, ncpm.min=1, nsamp.min=4)
+#dge.singlecell = getdge(singlecelldata,design.singlecell,ncpm.min=1, nsamp.min=4, method="bin.loess")
+#b0.singlecell = getb0.rnaseq(dge.singlecell, design.singlecell, ncpm.min=1, nsamp.min=4)
 #obtain cell type proportions in tissue
-dge_tissue.sc = getdge(tissuedata, NULL, ncpm.min=1, nsamp.min=4, method="bin.loess")
-resultx1_tissue.sc = getx1.rnaseq(NB0=1500,b0.singlecell, dge_tissue.sc)
+#dge_tissue.sc = getdge(tissuedata, NULL, ncpm.min=1, nsamp.min=4, method="bin.loess")
+#resultx1_tissue.sc = getx1.rnaseq(NB0=1500,b0.singlecell, dge_tissue.sc)
 
 ## ---- message=FALSE, results=FALSE--------------------------------------------
 #file1 = system.file("extdata","sample1_methratio.txt", package="deconvSeq")

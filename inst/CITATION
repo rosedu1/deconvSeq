@@ -1,0 +1,16 @@
+citHeader("To cite deconvSeq in publications use:")
+
+citEntry(
+  entry    = "Article",
+  title    = "deconvSeq: deconvolution of cell mixture distribution in sequencing data",
+  author   = "Du, R., Carey, V. and Weiss, S. T.",
+  journal  = "Bioinformatics",
+  year     = "2019",
+  volume   = "35",
+  number   = "24",
+  pages    = "5095-5102",
+  url      = "https://www.ncbi.nlm.nih.gov/pubmed/31147676",
+  textVersion = paste(
+
+  )
+)

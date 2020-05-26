@@ -10,6 +10,10 @@ data("data_scrnaseq")
 \description{
 \itemize{
 \item cnts.scrnaseq count matrix for full scRNAseq dataset
+\item cnts.sc count matrix for filtered scRNAseq dataset
+\item cnts.sc.G1 count matrix for filtered scRNAseq dataset for cell phase "G1"
+\item b0.sc projection matrix
+\item dge.sc DGE for training set
 }
 }
 \keyword{datasets}

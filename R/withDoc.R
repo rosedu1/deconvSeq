@@ -48,6 +48,10 @@ NULL
 #'
 #' \itemize{
 #'	\item cnts.scrnaseq count matrix for full scRNAseq dataset
+#'	\item cnts.sc count matrix for filtered scRNAseq dataset
+#'	\item cnts.sc.G1 count matrix for filtered scRNAseq dataset for cell phase "G1"
+#'	\item b0.sc projection matrix
+#'	\item dge.sc DGE for training set
 #' }
 #' @name data_scrnaseq
 #' @docType data
@@ -130,6 +134,22 @@ NULL
 
 #' Count matrix for single cell RNAseq
 "cnts.scrnaseq"
+
+#'	count matrix for filtered scRNAseq dataset
+"cnts.sc"
+
+#'	count matrix for filtered scRNAseq dataset for cell phase "G1"
+"cnts.sc.G1"
+
+#'	projection matrix
+"b0.sc"
+
+#'	DGE for training set
+"dge.sc"
+
+
+
+
 
 
 #==================================================

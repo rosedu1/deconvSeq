@@ -12,7 +12,7 @@
 
 <meta name="author" content="Rose Du, Vince Carey, Scott T. Weiss" />
 
-<meta name="date" content="2020-05-24" />
+<meta name="date" content="2020-05-25" />
 
 <title>deconvSeq: Deconvolution of cell mixture distribution in sequencing data</title>
 
@@ -315,22 +315,22 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">deconvSeq: Deconvolution of cell mixture distribution in sequencing data</h1>
 <h4 class="author">Rose Du, Vince Carey, Scott T. Weiss</h4>
-<h4 class="date">2020-05-24</h4>
+<h4 class="date">2020-05-25</h4>
 
 
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p><code>deconvSeq</code> is an R package for performing cell type deconvolution of whole tissue using bulk RNA sequencing (RNAseq) or bisulfite sequencing data such as reduced representation bisulfite sequencing (RRBS). Required input includes the sequencing data for the individual cell types and the whole tissue of interest.</p>
+<p><code>deconvSeq</code> <span class="citation">(Du, Carey, and Weiss 2019)</span> is an R package for performing cell type deconvolution of whole tissue using bulk RNA sequencing (RNAseq) or bisulfite sequencing data such as reduced representation bisulfite sequencing (RRBS). Required input includes the sequencing data for the individual cell types and the whole tissue of interest.</p>
 <p>In this vignette, we will demonstrate how to perform the analysis starting from a toy read count matrix for RNAseq (output from HTSeq <span class="citation">(Anders, Pyl, and Huber 2015)</span>) and from a methylation count matrix (output from BSMAP <span class="citation">(Xi and Li 2009)</span>). Data included with the package are: for RNA sequencing (data_celltypes_rnaseq and data_tissue_rnaseq), reduced representation bisulfite sequencing (data_celltypes_rrbs and data_tissue_rrbs), and single cell RNA sequencing (data_scrnaseq).</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(deconvSeq)</span></code></pre></div>
 </div>
 <div id="example-using-rna-sequencing-data" class="section level2">
 <h2>Example using RNA sequencing data</h2>
 <p>Read counts files for individual samples such as the output from HTSeq <span class="citation">(Anders, Pyl, and Huber 2015)</span> are loaded and combined into a single read count matrix, <code>countmat</code>, where the rows are the genes and the columns are the samples. The files are provided for illustrative purposes only and are not used subsequently in this vignette.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>file1 =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>,<span class="st">&quot;sample1_genecounts.txt&quot;</span>, <span class="dt">package=</span><span class="st">&quot;deconvSeq&quot;</span>)</span>
-<span id="cb2-2"><a href="#cb2-2"></a>file2 =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>,<span class="st">&quot;sample2_genecounts.txt&quot;</span>, <span class="dt">package=</span><span class="st">&quot;deconvSeq&quot;</span>)</span>
-<span id="cb2-3"><a href="#cb2-3"></a>countmat =<span class="st"> </span><span class="kw">getrnamat</span>(<span class="dt">filnames=</span><span class="kw">c</span>(file1,file2),<span class="dt">sample.id=</span><span class="kw">c</span>(<span class="st">&quot;sample1&quot;</span>,<span class="st">&quot;sample2&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">#file1 = system.file(&quot;extdata&quot;,&quot;sample1_genecounts.txt&quot;, package=&quot;deconvSeq&quot;)</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co">#file2 = system.file(&quot;extdata&quot;,&quot;sample2_genecounts.txt&quot;, package=&quot;deconvSeq&quot;)</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co">#countmat = getrnamat(filnames=c(file1,file2),sample.id=c(&quot;sample1&quot;,&quot;sample2&quot;))</span></span></code></pre></div>
 <p>Load the example data, <code>data_celltypes_rnaseq</code>, for individual cell types (T cells, B cells, monocytes, granulocytes). This includes 1) <code>cnts.celltypes</code>, count matrix for the individual cell types, 2) <code>design.rnaseq</code>, design matrix for <code>cnts.celltypes</code>, 3) <code>dge.celltypes</code>, DGEList (EdgeR, <span class="citation">(Robinson, McCarthy, and Smyth 2010)</span>) object derived from <code>cnts.celltypes</code>, and 4) <code>sample.id.rnaseq</code>, sample IDs which are column names for <code>cnts.celltypes</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">data</span>(<span class="st">&quot;data_celltypes_rnaseq&quot;</span>) </span></code></pre></div>
 <p>The design matrix can be obtained by creating a dataframe or using <code>model.matrix</code>. For example,</p>
@@ -373,10 +373,10 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h2>Example using single cell RNA sequencing data</h2>
 <p>Load data for single cell RNA sequencing (scRNAseq).</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">data</span>(<span class="st">&quot;data_scrnaseq&quot;</span>) </span></code></pre></div>
-<p>This includes the count matrix, <code>cnts.scrnaseq</code>, which is a count matrix with gene symbols for rows and samples for columns. There are two cell types, HuTreg and HuTconv. The sample names indicate the cell type. Single cell RNA sequencing data are sparse and technically noisy and therefore require additional quality control measures. We implement the filtering per Lun et al. <span class="citation">(Lun and Marioni 2016)</span>. Cells with log-transformed number of expressed genes or log-library sizes that are more than 3 median absolute deviations below the median and cells with mitochondrial proportions higher than 3 median absolute deviations above the median are removed. The user can specify the average count threhold where low-abundance genes with an average count below the threshold are removed. Finally, cells can be filtered for a specific cell cycle phase (G1, G2M, or S). The gene name type can be either HGNC symbols or Ensembl IDs.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>cnts.sc =<span class="st"> </span><span class="kw">prep_scrnaseq</span>(cnts.scrnaseq, <span class="dt">genenametype =</span> <span class="st">&quot;hgnc_symbol&quot;</span>,<span class="dt">cellcycle=</span><span class="ot">NULL</span>,<span class="dt">count.threshold=</span><span class="fl">0.05</span>)</span></code></pre></div>
+<p>This includes the count matrix, <code>cnts.scrnaseq</code>, which is a count matrix with gene symbols for rows and samples for columns. There are two cell types, HuTreg and HuTconv. The sample names indicate the cell type. Single cell RNA sequencing data are sparse and technically noisy and therefore require additional quality control measures. We implement the filtering per Lun et al. <span class="citation">(Lun and Marioni 2016)</span>. Cells with log-transformed number of expressed genes or log-library sizes that are more than 3 median absolute deviations below the median and cells with mitochondrial proportions higher than 3 median absolute deviations above the median are removed. The user can specify the average count threhold where low-abundance genes with an average count below the threshold are removed. Finally, cells can be filtered for a specific cell cycle phase (G1, G2M, or S). The gene name type can be either HGNC symbols or Ensembl IDs. Other results have been precompiled in this portion of the vignette where the code has been commented out and included in <code>data_scrnaseq</code>.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">#cnts.sc = prep_scrnaseq(cnts.scrnaseq, genenametype = &quot;hgnc_symbol&quot;,cellcycle=NULL,count.threshold=0.05)</span></span></code></pre></div>
 <p>Here we filter for cell cycle phase “G1”.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>cnts.sc.G1 =<span class="st"> </span><span class="kw">getcellcycle</span>(cnts.sc,<span class="st">&quot;G1&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co">#cnts.sc.G1 = getcellcycle(cnts.sc,&quot;G1&quot;)</span></span></code></pre></div>
 <p>We can divide the data into a training set and a validation set.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>cnts.sc.G1.train =<span class="st"> </span>cnts.sc.G1[,<span class="kw">c</span>(<span class="kw">which</span>(<span class="kw">substr</span>(<span class="kw">colnames</span>(cnts.sc.G1),<span class="dv">3</span>,<span class="dv">6</span>)<span class="op">==</span><span class="st">&quot;Tcon&quot;</span>)[<span class="dv">1</span><span class="op">:</span><span class="dv">250</span>],<span class="kw">which</span>(<span class="kw">substr</span>(<span class="kw">colnames</span>(cnts.sc.G1),<span class="dv">3</span>,<span class="dv">6</span>)<span class="op">==</span><span class="st">&quot;Treg&quot;</span>)[<span class="dv">1</span><span class="op">:</span><span class="dv">150</span>])]</span>
 <span id="cb17-2"><a href="#cb17-2"></a>cnts.sc.G1.valid =<span class="st"> </span>cnts.sc.G1[,<span class="op">-</span><span class="kw">which</span>(<span class="kw">colnames</span>(cnts.sc.G1) <span class="op">%in%</span><span class="st"> </span><span class="kw">colnames</span>(cnts.sc.G1.train))]</span>
@@ -388,8 +388,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb17-8"><a href="#cb17-8"></a><span class="kw">rownames</span>(design.sc) =<span class="st"> </span><span class="kw">names</span>(tissue.sc)</span>
 <span id="cb17-9"><a href="#cb17-9"></a>design.sc =<span class="st"> </span>design.sc[<span class="kw">colnames</span>(cnts.sc.G1.train),]</span></code></pre></div>
 <p>From the count matrix, <code>cnts.sc.G1.train</code>, obtain the DGEList object, <code>dge.sc</code>, and the projection matrix, <code>b0.sc</code>.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>dge.sc =<span class="st"> </span><span class="kw">getdge</span>(cnts.sc.G1.train,design.sc,<span class="dt">ncpm.min=</span><span class="dv">1</span>, <span class="dt">nsamp.min=</span><span class="dv">4</span>, <span class="dt">method=</span><span class="st">&quot;bin.loess&quot;</span>)</span>
-<span id="cb18-2"><a href="#cb18-2"></a>b0.sc =<span class="st"> </span><span class="kw">getb0.rnaseq</span>(dge.sc, design.sc, <span class="dt">ncpm.min=</span><span class="dv">1</span>, <span class="dt">nsamp.min=</span><span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co">#dge.sc = getdge(cnts.sc.G1.train,design.sc,ncpm.min=1, nsamp.min=4, method=&quot;bin.loess&quot;)</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="co">#b0.sc = getb0.rnaseq(dge.sc, design.sc, ncpm.min=1, nsamp.min=4)</span></span></code></pre></div>
 <p>Apply the projection matrix to the validation set, <code>cnts.sc.G1.valid</code>.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>tissue_s.sc =<span class="st"> </span><span class="kw">substr</span>(<span class="kw">colnames</span>(cnts.sc.G1.valid),<span class="dv">3</span>,<span class="dv">6</span>)</span>
 <span id="cb19-2"><a href="#cb19-2"></a><span class="kw">names</span>(tissue_s.sc) =<span class="st"> </span><span class="kw">colnames</span>(cnts.sc.G1.valid)</span>
@@ -410,21 +410,21 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h3>Using single cell RNA sequencing for the projection matrix and bulk RNA sequencing for the tissue</h3>
 <p><code>deconvSeq</code> can be applied to scRNAseq data to obtain the projection matrix, <code>b0.sc</code>, and subsequently used on bulk RNAseq data for the tissue by using <code>getx1.rnaseq</code>. Here we illustrate this by treating the count data from the validation set as bulk tissue with unknown cell types.</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co">#scRNAseq data</span></span>
-<span id="cb22-2"><a href="#cb22-2"></a>singlecelldata =<span class="st"> </span>cnts.sc.G1.train </span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="co">#singlecelldata = cnts.sc.G1.train </span></span>
 <span id="cb22-3"><a href="#cb22-3"></a><span class="co">#known single cell types of the scRNAseq data</span></span>
-<span id="cb22-4"><a href="#cb22-4"></a>celltypes.sc =<span class="st"> </span>tissue.sc </span>
+<span id="cb22-4"><a href="#cb22-4"></a><span class="co">#celltypes.sc = tissue.sc </span></span>
 <span id="cb22-5"><a href="#cb22-5"></a><span class="co">#tissue data with unknown cell types</span></span>
-<span id="cb22-6"><a href="#cb22-6"></a>tissuedata =<span class="st"> </span>cnts.sc.G1.valid </span>
+<span id="cb22-6"><a href="#cb22-6"></a><span class="co">#tissuedata = cnts.sc.G1.valid </span></span>
 <span id="cb22-7"><a href="#cb22-7"></a><span class="co">#obtain design matrix from scRNAseq data </span></span>
-<span id="cb22-8"><a href="#cb22-8"></a>design.singlecell =<span class="st"> </span><span class="kw">model.matrix</span>(<span class="op">~-</span><span class="dv">1</span><span class="op">+</span><span class="kw">as.factor</span>(celltypes.sc))</span>
-<span id="cb22-9"><a href="#cb22-9"></a><span class="kw">colnames</span>(design.singlecell) =<span class="st"> </span><span class="kw">levels</span>(<span class="kw">as.factor</span>(celltypes.sc))</span>
-<span id="cb22-10"><a href="#cb22-10"></a><span class="kw">rownames</span>(design.singlecell) =<span class="st"> </span><span class="kw">names</span>(celltypes.sc)</span>
+<span id="cb22-8"><a href="#cb22-8"></a><span class="co">#design.singlecell = model.matrix(~-1+as.factor(celltypes.sc))</span></span>
+<span id="cb22-9"><a href="#cb22-9"></a><span class="co">#colnames(design.singlecell) = levels(as.factor(celltypes.sc))</span></span>
+<span id="cb22-10"><a href="#cb22-10"></a><span class="co">#rownames(design.singlecell) = names(celltypes.sc)</span></span>
 <span id="cb22-11"><a href="#cb22-11"></a><span class="co">#obtain projection matrix</span></span>
-<span id="cb22-12"><a href="#cb22-12"></a>dge.singlecell =<span class="st"> </span><span class="kw">getdge</span>(singlecelldata,design.singlecell,<span class="dt">ncpm.min=</span><span class="dv">1</span>, <span class="dt">nsamp.min=</span><span class="dv">4</span>, <span class="dt">method=</span><span class="st">&quot;bin.loess&quot;</span>)</span>
-<span id="cb22-13"><a href="#cb22-13"></a>b0.singlecell =<span class="st"> </span><span class="kw">getb0.rnaseq</span>(dge.singlecell, design.singlecell, <span class="dt">ncpm.min=</span><span class="dv">1</span>, <span class="dt">nsamp.min=</span><span class="dv">4</span>)</span>
+<span id="cb22-12"><a href="#cb22-12"></a><span class="co">#dge.singlecell = getdge(singlecelldata,design.singlecell,ncpm.min=1, nsamp.min=4, method=&quot;bin.loess&quot;)</span></span>
+<span id="cb22-13"><a href="#cb22-13"></a><span class="co">#b0.singlecell = getb0.rnaseq(dge.singlecell, design.singlecell, ncpm.min=1, nsamp.min=4)</span></span>
 <span id="cb22-14"><a href="#cb22-14"></a><span class="co">#obtain cell type proportions in tissue</span></span>
-<span id="cb22-15"><a href="#cb22-15"></a>dge_tissue.sc =<span class="st"> </span><span class="kw">getdge</span>(tissuedata, <span class="ot">NULL</span>, <span class="dt">ncpm.min=</span><span class="dv">1</span>, <span class="dt">nsamp.min=</span><span class="dv">4</span>, <span class="dt">method=</span><span class="st">&quot;bin.loess&quot;</span>)</span>
-<span id="cb22-16"><a href="#cb22-16"></a>resultx1_tissue.sc =<span class="st"> </span><span class="kw">getx1.rnaseq</span>(<span class="dt">NB0=</span><span class="dv">1500</span>,b0.singlecell, dge_tissue.sc)</span></code></pre></div>
+<span id="cb22-15"><a href="#cb22-15"></a><span class="co">#dge_tissue.sc = getdge(tissuedata, NULL, ncpm.min=1, nsamp.min=4, method=&quot;bin.loess&quot;)</span></span>
+<span id="cb22-16"><a href="#cb22-16"></a><span class="co">#resultx1_tissue.sc = getx1.rnaseq(NB0=1500,b0.singlecell, dge_tissue.sc)</span></span></code></pre></div>
 </div>
 </div>
 <div id="example-using-bisulfite-sequencing-data" class="section level2">
@@ -472,6 +472,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="refs" class="references hanging-indent">
 <div id="ref-anders15">
 <p>Anders, S., P. T. Pyl, and W. Huber. 2015. “HTSeq–a Python Framework to Work with High-Throughput Sequencing Data.” Journal Article. <em>Bioinformatics</em> 31 (2): 166–9. <a href="https://doi.org/10.1093/bioinformatics/btu638">https://doi.org/10.1093/bioinformatics/btu638</a>.</p>
+</div>
+<div id="ref-du19">
+<p>Du, R., V. Carey, and S. T. Weiss. 2019. “DeconvSeq: Deconvolution of Cell Mixture Distribution in Sequencing Data.” Journal Article. <em>Bioinformatics</em> 35: 5095–5102. <a href="https://doi.org/10.1093/bioinformatics/btz444">https://doi.org/10.1093/bioinformatics/btz444</a>.</p>
 </div>
 <div id="ref-krueger11">
 <p>Krueger, F., and S. R. Andrews. 2011. “Bismark: A Flexible Aligner and Methylation Caller for Bisulfite-Seq Applications.” Journal Article. <em>Bioinformatics</em> 27: 1571–2.</p>
