@@ -24,6 +24,8 @@ NULL
 #'	\item cnts.celltypes count matrix
 #'	\item design.rnaseq design matrix 
 #'	\item sample.id.rnaseq sample IDs
+#'	\item b0 projection matrix
+#'	\item resultx1 results
 #' }
 #' @name data_celltypes_rnaseq
 #' @docType data
@@ -37,6 +39,7 @@ NULL
 #'	\item dge.tissue DGE object (from EdgeR) of RNAseq results 
 #'	\item cnts.tissue count matrix
 #'	\item cbc.rnaseq known cell type mixture for tissue
+#'	\item resultx1.tissue results
 #' }
 #' @name data_tissue_rnaseq
 #' @docType data
@@ -52,6 +55,9 @@ NULL
 #'	\item cnts.sc.G1 count matrix for filtered scRNAseq dataset for cell phase "G1"
 #'	\item b0.sc projection matrix
 #'	\item dge.sc DGE for training set
+#'	\item design_s.sc design matrix
+#'	\item sample.id_s.sc sample IDs
+#'	\item resultx1_s.sc results
 #' }
 #' @name data_scrnaseq
 #' @docType data
@@ -67,6 +73,7 @@ NULL
 #'	\item celltypes.rrbs vector of kinds of cell types
 #'	\item design.rrbs design matrix 
 #'	\item sample.id.rrbs sample IDs 
+#'	\item resultx1.rrbs results
 #' }
 #' @name data_celltypes_rrbs
 #' @docType data
@@ -78,8 +85,9 @@ NULL
 #'
 #' \itemize{
 #'	\item methmat.tissue methylation matrix 
-#'	\item sample.id.tissue sample IDs 
+#'	\item sample.id.tissue.rrbs sample IDs 
 #'	\item cbc.rrbs known cell type mixture for tissue
+#'	\item resultx1.tissue.rrbs results
 #' }
 #' @name data_tissue_rrbs
 #' @docType data
@@ -99,6 +107,12 @@ NULL
 #' Sample IDs for cell types (RNAseq)
 "sample.id.rnaseq"
 
+#' Projection matrix (RNAseq)
+"b0"
+
+#' Results from celltype analysis (RNAseq)
+"resultx1"
+
 #' DGE object (from EdgeR) of RNAseq results for tissue
 "dge.tissue"
 
@@ -108,8 +122,32 @@ NULL
 #' Known cell type mixture for tissue (RNAseq)
 "cbc.rnaseq"
 
+#' Results from tissue analysis (RNAseq)
+"resultx1.tissue"
+
 #' Count matrix for single cell RNAseq (scRNAseq)
 "cnts.scrnaseq"
+
+#'	count matrix for filtered scRNAseq dataset
+"cnts.sc"
+
+#'	count matrix for filtered scRNAseq dataset for cell phase "G1"
+"cnts.sc.G1"
+
+#'	projection matrix (scRNAseq)
+"b0.sc"
+
+#'	DGE for training set (scRNAseq)
+"dge.sc"
+
+#' Design matrix (scRNAseq)
+"design_s.sc"
+
+#' sample IDs (scRNAseq)
+"sample.id_s.sc"
+
+#' Results (scRNAseq)
+"resultx1_s.sc"
 
 #' methylation matrix for cell types (bisulfite sequencing)
 "methmat"
@@ -123,32 +161,20 @@ NULL
 #' Sample IDs for cell types (bisulfite sequencing)
 "sample.id.rrbs"
 
+#' Results from celltypes analysis (bisulfite sequencing)
+"resultx1.rrbs"
+
 #' methylation matrix for tissue (bisulfite sequencing)
 "methmat.tissue"
 
 #' Sample IDs for tissue (bisulfite sequencing)
-"sample.id.tissue"
+"sample.id.tissue.rrbs"
 
 #' Known cell type mixture for tissue (bisulfite sequencing)
 "cbc.rrbs"
 
-#' Count matrix for single cell RNAseq
-"cnts.scrnaseq"
-
-#'	count matrix for filtered scRNAseq dataset
-"cnts.sc"
-
-#'	count matrix for filtered scRNAseq dataset for cell phase "G1"
-"cnts.sc.G1"
-
-#'	projection matrix
-"b0.sc"
-
-#'	DGE for training set
-"dge.sc"
-
-
-
+#' Results from tissue analysis (bisulfite sequencing)
+"resultx1.tissue.rrbs"
 
 
 

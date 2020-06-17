@@ -6,17 +6,11 @@
 \title{Count matrix for single cell RNAseq (scRNAseq)}
 \format{
 An object of class \code{matrix} (inherits from \code{array}) with 3439 rows and 1749 columns.
-
-An object of class \code{matrix} (inherits from \code{array}) with 3439 rows and 1749 columns.
 }
 \usage{
-cnts.scrnaseq
-
 cnts.scrnaseq
 }
 \description{
 Count matrix for single cell RNAseq (scRNAseq)
-
-Count matrix for single cell RNAseq
 }
 \keyword{datasets}

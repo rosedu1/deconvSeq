@@ -10,8 +10,9 @@ data("data_tissue_rrbs")
 \description{
 \itemize{
 \item methmat.tissue methylation matrix
-\item sample.id.tissue sample IDs
+\item sample.id.tissue.rrbs sample IDs
 \item cbc.rrbs known cell type mixture for tissue
+\item resultx1.tissue.rrbs results
 }
 }
 \keyword{datasets}

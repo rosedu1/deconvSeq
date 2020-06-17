@@ -3,7 +3,7 @@
 \docType{data}
 \name{dge.sc}
 \alias{dge.sc}
-\title{DGE for training set}
+\title{DGE for training set (scRNAseq)}
 \format{
 An object of class \code{DGEList} with 3439 rows and 400 columns.
 }
@@ -11,6 +11,6 @@ An object of class \code{DGEList} with 3439 rows and 400 columns.
 dge.sc
 }
 \description{
-DGE for training set
+DGE for training set (scRNAseq)
 }
 \keyword{datasets}

@@ -13,6 +13,7 @@ data("data_celltypes_rrbs")
 \item celltypes.rrbs vector of kinds of cell types
 \item design.rrbs design matrix
 \item sample.id.rrbs sample IDs
+\item resultx1.rrbs results
 }
 }
 \keyword{datasets}

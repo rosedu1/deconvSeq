@@ -12,6 +12,7 @@ data("data_tissue_rnaseq")
 \item dge.tissue DGE object (from EdgeR) of RNAseq results
 \item cnts.tissue count matrix
 \item cbc.rnaseq known cell type mixture for tissue
+\item resultx1.tissue results
 }
 }
 \keyword{datasets}

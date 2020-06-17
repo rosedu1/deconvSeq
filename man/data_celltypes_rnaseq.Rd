@@ -13,6 +13,8 @@ data("data_celltypes_rnaseq")
 \item cnts.celltypes count matrix
 \item design.rnaseq design matrix
 \item sample.id.rnaseq sample IDs
+\item b0 projection matrix
+\item resultx1 results
 }
 }
 \keyword{datasets}

@@ -14,6 +14,9 @@ data("data_scrnaseq")
 \item cnts.sc.G1 count matrix for filtered scRNAseq dataset for cell phase "G1"
 \item b0.sc projection matrix
 \item dge.sc DGE for training set
+\item design_s.sc design matrix
+\item sample.id_s.sc sample IDs
+\item resultx1_s.sc results
 }
 }
 \keyword{datasets}
