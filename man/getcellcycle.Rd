@@ -19,3 +19,10 @@ count matrix containing only cells with the selected cell cycle phase
 \description{
 filter for cells with particular cell cycle phase: "G1", "G2M", or "S"
 }
+\examples{
+\dontrun{
+data("data_scrnaseq") 
+cnts.sc = prep_scrnaseq(cnts.scrnaseq,cellcycle=NULL,count.threshold=0.05)
+cnts.sc.G1 = getcellcycle(cnts.sc,"G1")
+}
+}

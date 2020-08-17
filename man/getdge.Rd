@@ -25,3 +25,7 @@ dge DGE object
 \description{
 Obtain EdgeR DGE object from count matrix
 }
+\examples{
+data("data_celltypes_rnaseq") 
+dge.celltypes = getdge(cnts.celltypes, design.rnaseq, ncpm.min=1, nsamp.min=4)
+}

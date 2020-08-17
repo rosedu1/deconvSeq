@@ -11,7 +11,7 @@ getmethmat(filnames, sample.id, filtype = "bsmap")
 
 \item{sample.id}{sample IDs}
 
-\item{filtype}{"bsmap", "bismark". Default is "bsmap"}
+\item{filtype}{"bsmap", "bismarkCoverage","bismarkCytosineReport". Default is "bsmap". "bismarkCoverage" files, have the columns: chr,start,end, number of cytosines (methylated bases) and number of thymines (unmethylated bases). "bismarkCytosineReport" have the columns: chr,start, strand, number of cytosines (methylated bases) , number of thymines (unmethylated bases),context and trinucletide context format.}
 }
 \value{
 methylation count matrix where rows are CpG sites and columns are: chromosome, start, end, strand, number of Ts+Cs for sample 1, number of Cs for sample 1, number of Ts for sample 1, ....
@@ -32,7 +32,9 @@ For BSMAP input files, extracts CpGs and output in filname.CpG in the current wo
 Adds "Chr" to chromosome name and output in filname.CpG_chr.
 }
 \examples{
- #file1 = system.file("extdata","sample1_methratio.txt", package="deconvSeq")
- #file2 = system.file("extdata","sample2_methratio.txt", package="deconvSeq")
- #methmat = getmethmat(filnames=c(file1,file2), sample.id=c("sample1","sample2"), filtype="bsmap")
+\dontrun{
+ file1 = system.file("extdata","sample1_methratio.txt", package="deconvSeq")
+ file2 = system.file("extdata","sample2_methratio.txt", package="deconvSeq")
+ methmat = getmethmat(filnames=c(file1,file2), sample.id=c("sample1","sample2"), filtype="bsmap")
+}
 }

@@ -60,7 +60,7 @@ my_diffMethFromDesign_matrix<-function(cur_methmat, cur_design, cur_formula){
 ###############
 	cur_function<-function(x){
 		
-		if(x %% 100==0) cat(x,"\n")
+		if(x %% 100==0) message(x)
 		# x is an index
 		# it is assumed that the appropriate data has been loaded into
 		# c_data, t_data, cur_design, and cur_formula

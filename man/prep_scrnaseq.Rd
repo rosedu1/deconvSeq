@@ -14,7 +14,7 @@ prep_scrnaseq(
 \arguments{
 \item{scrna_mat}{count matrix  for single cell RNAseq}
 
-\item{genenametype}{nomenclature for genes in count matrix: "hgnc_symbol" or "ensembl_id"}
+\item{genenametype}{nomenclature for genes in count matrix: "hgnc_symbol" or "ensembl_id". Default is "hgnc_symbol".}
 
 \item{cellcycle}{filter for specific cell cycle phase: "G1", "G2M", or "S". Default is NULL, for no cell cycle phase filtering.}
 
@@ -25,4 +25,10 @@ count matrix after quality control
 }
 \description{
 do quality control of scRNAseq based on library size, feature counts, chrM, cell cycle phase, and count threshold
+}
+\examples{
+\dontrun{
+data("data_scrnaseq") 
+cnts.sc = prep_scrnaseq(cnts.scrnaseq,cellcycle=NULL,count.threshold=0.05)
+}
 }

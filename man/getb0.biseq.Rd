@@ -20,3 +20,9 @@ b0 projection matrix. Coefficients are beta.
 \description{
 compute b0, projection matrix, given methylation counts
 }
+\examples{
+\dontrun{
+data("data_celltypes_rrbs") 
+b0.rrbs = getb0.biseq(methmat, design.rrbs, sigg=NULL)
+}
+}

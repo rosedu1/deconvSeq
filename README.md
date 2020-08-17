@@ -32,21 +32,24 @@ Note:
 Vignette: [HTML Vignette](https://rosedu1.github.io/deconvSeq_vignette.html)
 
 ## Version notes
-5/20/20 version 0.1.3 1) in withDoc.R, function prep_scrnaseq, replaced defunct functions calculateQCMetrics with perCellQCMetrics and replaced defunct calcAverage with calculateAverage. 2) in function getmethmat, added filetypes to include output from Bismark as well as BSMAP, 3) in function getmethmat, added condition to not filter if there are no cases where all Cs or all Ts are 0.
 
-5/20/20 version 0.1.4 1) Updated mydiffMethFromDesign_matrix.R, line 169, class(res)=="list" changed to class(res)[1]=="list". This does not affect the functionality of the package.
+8/16/20 version 0.3.0 1) Added bismark filetypes to getmethmat. 
 
-5/21/20 version 0.2.0 1) Reduced size of data_scrnaseq.rda to reduce package size. 2) Updated prep_scrnaseq to include error message for wrong genenametype.
-
-5/23/20 version 0.2.1 1) Removed dependency on simpleSingleCell from package
-
-5/25/20 version 0.2.2 1) Removed examples from getcorr
-
-5/25/20 version 0.2.3 1) Commented out time consuming portions of vignette and added precompiled data
+6/17/20 version 0.2.5 1) Reduced vignette run time
 
 5/25/20 version 0.2.4 1) Added citation to vignette and package
 
-6/17/20 version 0.2.5 1) Reduced vignette run time
+5/25/20 version 0.2.3 1) Commented out time consuming portions of vignette and added precompiled data
+
+5/25/20 version 0.2.2 1) Removed examples from getcorr
+
+5/23/20 version 0.2.1 1) Removed dependency on simpleSingleCell from package
+
+5/21/20 version 0.2.0 1) Reduced size of data_scrnaseq.rda to reduce package size. 2) Updated prep_scrnaseq to include error message for wrong genenametype.
+
+5/20/20 version 0.1.4 1) Updated mydiffMethFromDesign_matrix.R, line 169, class(res)=="list" changed to class(res)[1]=="list". This does not affect the functionality of the package.
+
+5/20/20 version 0.1.3 1) in withDoc.R, function prep_scrnaseq, replaced defunct functions calculateQCMetrics with perCellQCMetrics and replaced defunct calcAverage with calculateAverage. 2) in function getmethmat, added filetypes to include output from Bismark as well as BSMAP, 3) in function getmethmat, added condition to not filter if there are no cases where all Cs or all Ts are 0.
 
 
 ## Citation

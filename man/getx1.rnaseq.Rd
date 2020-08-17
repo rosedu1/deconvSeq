@@ -31,3 +31,11 @@ converged convergence. 1=converged
 \description{
 compute mixture data given projection matrix (RNAseq)
 }
+\examples{
+\dontrun{
+data("data_celltypes_rnaseq") 
+dge.celltypes = getdge(cnts.celltypes, design.rnaseq, ncpm.min=1, nsamp.min=4)
+b0 = getb0.rnaseq(dge.celltypes, design.rnaseq, ncpm.min=1, nsamp.min=4, sigg=NULL)
+resultx1 = getx1.rnaseq(NB0="top_bonferroni",b0,dge.celltypes)
+}
+}

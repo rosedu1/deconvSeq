@@ -12,7 +12,7 @@
 
 <meta name="author" content="Rose Du, Vince Carey, Scott T. Weiss" />
 
-<meta name="date" content="2020-06-17" />
+<meta name="date" content="2020-08-17" />
 
 <title>deconvSeq: Deconvolution of cell mixture distribution in sequencing data</title>
 
@@ -26,6 +26,22 @@ document.addEventListener('DOMContentLoaded', function(e) {
     if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
     a = h.attributes;
     while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
   }
 });
 </script>
@@ -315,7 +331,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">deconvSeq: Deconvolution of cell mixture distribution in sequencing data</h1>
 <h4 class="author">Rose Du, Vince Carey, Scott T. Weiss</h4>
-<h4 class="date">2020-06-17</h4>
+<h4 class="date">2020-08-17</h4>
 
 
 
@@ -429,7 +445,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="example-using-bisulfite-sequencing-data" class="section level2">
 <h2>Example using bisulfite sequencing data</h2>
-<p>For RRBS data, BSMAP <span class="citation">(Xi and Li 2009)</span> or Bismark <span class="citation">(Krueger and Andrews 2011)</span> can be used to do the alignment. Output from BSmap has the following columns: chr, pos, strand, context, ratio, eff_CT_count, C_count, CT_count, rev_G_count, rev_GA_count, CI_lower, CI_upper. Coverage output from Bismark has the following columns: chrBase, chr, base, strand, coverage, freqC, freqT. Indicate file type as “bsmap” or “bismark”. Load the toy input files and convert them to a methylation matrix, <code>methmat</code>, with <code>getmethmat</code>. The files are provided for illustrative purposes only and are not used subsequently in this vignette.</p>
+<p>For RRBS data, BSMAP <span class="citation">(Xi and Li 2009)</span> or Bismark <span class="citation">(Krueger and Andrews 2011)</span> can be used to do the alignment. Output from BSmap has the following columns: chr, pos, strand, context, ratio, eff_CT_count, C_count, CT_count, rev_G_count, rev_GA_count, CI_lower, CI_upper. Bismark coverage output from Bismark has the following columns: chr,start,end, number of cytosines (methylated bases) and number of thymines (unmethylated bases). Bismark cytosine report has the following columns: chr,start, strand, number of cytosines (methylated bases) , number of thymines (unmethylated bases),context and trinucletide context format. Indicate file type as “bsmap”, “bismarkCoverage”, or “bismarkCystosineReport”. Load the toy input files and convert them to a methylation matrix, <code>methmat</code>, with <code>getmethmat</code>. The files are provided for illustrative purposes only and are not used subsequently in this vignette.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>file1 =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>,<span class="st">&quot;sample1_methratio.txt&quot;</span>, <span class="dt">package=</span><span class="st">&quot;deconvSeq&quot;</span>)</span>
 <span id="cb24-2"><a href="#cb24-2"></a>file2 =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>,<span class="st">&quot;sample2_methratio.txt&quot;</span>, <span class="dt">package=</span><span class="st">&quot;deconvSeq&quot;</span>)</span>
 <span id="cb24-3"><a href="#cb24-3"></a>methmat =<span class="st"> </span><span class="kw">getmethmat</span>(<span class="dt">filnames=</span><span class="kw">c</span>(file1,file2), <span class="dt">sample.id=</span><span class="kw">c</span>(<span class="st">&quot;sample1&quot;</span>,<span class="st">&quot;sample2&quot;</span>), <span class="dt">filtype=</span><span class="st">&quot;bsmap&quot;</span>)</span></code></pre></div>

@@ -16,3 +16,6 @@ mean correlation and 95\% CI
 get mean correlation by first doing Fisher transform to z, averaging z, then reverse transform back
 do quality control of scRNAseq based on library size, feature counts, chrM, cell cycle phase, and count threshold
 }
+\examples{
+getmeancorr(c(0.1,0.2,0.3))
+}

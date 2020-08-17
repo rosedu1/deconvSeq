@@ -234,6 +234,9 @@ getrnamat <- function(filnames, sample.id){
 #' @param method method used to esimate trended dispersion in EdgeR: "auto" (default), "bin.spline", "bin.loess", "power", "spline"
 #'   exceeding ncpm.min for a gene to be retained
 #' @return dge DGE object
+#' @examples
+#' data("data_celltypes_rnaseq") 
+#' dge.celltypes = getdge(cnts.celltypes, design.rnaseq, ncpm.min=1, nsamp.min=4)
 #' @export
 getdge <- function(countmat, design, ncpm.min=1, nsamp.min=4, method="auto"){
 	
@@ -277,6 +280,12 @@ getdge <- function(countmat, design, ncpm.min=1, nsamp.min=4, method="auto"){
 #' @return dge DGE object
 #' @return converged convergence status. 1=converged.
 #' @return pfstat F-stat p-values for each gene
+#' @examples
+#' \dontrun{
+#'  data("data_celltypes_rnaseq") 
+#'  dge.celltypes = getdge(cnts.celltypes, design.rnaseq, ncpm.min=1, nsamp.min=4)
+#'  b0 = getb0.rnaseq(dge.celltypes, design.rnaseq, ncpm.min=1, nsamp.min=4, sigg=NULL)
+#'  }
 #' @export
 getb0.rnaseq <- function(dge, design, ncpm.min=1, nsamp.min=4, sigg=NULL){
 
@@ -390,6 +399,13 @@ getb0.rnaseq <- function(dge, design, ncpm.min=1, nsamp.min=4, sigg=NULL){
 #' @param x0 initial cell type composition for fitting
 #' @return x1 cell mixture of sample
 #' @return converged convergence. 1=converged
+#' @examples
+#' \dontrun{
+#' data("data_celltypes_rnaseq") 
+#' dge.celltypes = getdge(cnts.celltypes, design.rnaseq, ncpm.min=1, nsamp.min=4)
+#' b0 = getb0.rnaseq(dge.celltypes, design.rnaseq, ncpm.min=1, nsamp.min=4, sigg=NULL)
+#' resultx1 = getx1.rnaseq(NB0="top_bonferroni",b0,dge.celltypes)
+#' }
 #' @export
 getx1.rnaseq<-function(NB0="top_bonferroni", resultb0, dge_s, MAXITER=1000, x0=NULL){
 	
@@ -474,12 +490,14 @@ getx1.rnaseq<-function(NB0="top_bonferroni", resultb0, dge_s, MAXITER=1000, x0=N
 #' Adds "Chr" to chromosome name and output in filname.CpG_chr.
 #' @param filnames input filenames
 #' @param sample.id sample IDs
-#' @param filtype "bsmap", "bismark". Default is "bsmap"
+#' @param filtype "bsmap", "bismarkCoverage","bismarkCytosineReport". Default is "bsmap". "bismarkCoverage" files, have the columns: chr,start,end, number of cytosines (methylated bases) and number of thymines (unmethylated bases). "bismarkCytosineReport" have the columns: chr,start, strand, number of cytosines (methylated bases) , number of thymines (unmethylated bases),context and trinucletide context format.
 #' @return methylation count matrix where rows are CpG sites and columns are: chromosome, start, end, strand, number of Ts+Cs for sample 1, number of Cs for sample 1, number of Ts for sample 1, ....
 #' @examples
-#'  #file1 = system.file("extdata","sample1_methratio.txt", package="deconvSeq")
-#'  #file2 = system.file("extdata","sample2_methratio.txt", package="deconvSeq")
-#'  #methmat = getmethmat(filnames=c(file1,file2), sample.id=c("sample1","sample2"), filtype="bsmap")
+#' \dontrun{
+#'  file1 = system.file("extdata","sample1_methratio.txt", package="deconvSeq")
+#'  file2 = system.file("extdata","sample2_methratio.txt", package="deconvSeq")
+#'  methmat = getmethmat(filnames=c(file1,file2), sample.id=c("sample1","sample2"), filtype="bsmap")
+#' }
 #' @export
 getmethmat <- function(filnames, sample.id, filtype="bsmap"){
 	
@@ -499,14 +517,17 @@ getmethmat <- function(filnames, sample.id, filtype="bsmap"){
 		#parameters for assembly and context are for methRead and do not affect final count matrix
 		obj=methRead(as.list(nfil), sample.id=as.list(sample.id), assembly="grch38",header=FALSE, context="CpG",resolution="base", pipeline=list(fraction=TRUE,chr.col=1,start.col=2,end.col=2,coverage.col=6,strand.col=3, freqC.col=5), treatment=rep(0,length(filnames)))
 		
-	} else if (filtype=="bismark"){
+	} else if (filtype=="bismarkCoverage"){
 		
 		obj=methRead(as.list(filnames), sample.id=as.list(sample.id), assembly="grch38",header=TRUE, context="CpG",resolution="base", treatment=rep(0,length(filnames)),pipeline="bismarkCoverage")
 
-		
+	} else if (filtype=="bismarkCytosineReport"){
+		obj=methRead(as.list(filnames), sample.id=as.list(sample.id), assembly="grch38",header=TRUE, context="CpG",resolution="base", treatment=rep(0,length(filnames)),pipeline="bismarkCytosineReport")
+
+	
 	} else {
 		
-		cat("Wrong file type. Filetypes are 'bsmap' or 'bismark'\n")
+		stop("Wrong file type. Filetypes are 'bsmap','bismarkCoverage', or 'bismarkCytosineReport' ")
 		return()
 	}
 
@@ -521,7 +542,7 @@ getmethmat <- function(filnames, sample.id, filtype="bsmap"){
 		meth.filter = meth.data
 	}
 
-	if(filtype=="bsmap") cat("files *.CpG and *.CpG_chr are written to current working directory\n")
+	if(filtype=="bsmap") message("files *.CpG and *.CpG_chr are written to current working directory ")
 	
 	return(meth.filter)
 }
@@ -534,6 +555,11 @@ getmethmat <- function(filnames, sample.id, filtype="bsmap"){
 #' @param sigg predetermined signature CpG sites. Format sites as chromosome 
 #'    name, chromosome location, strand: chrN_position(+/-). For example, chr1_906825-
 #' @return b0 projection matrix. Coefficients are beta.
+#' @examples
+#' \dontrun{
+#' data("data_celltypes_rrbs") 
+#' b0.rrbs = getb0.biseq(methmat, design.rrbs, sigg=NULL)
+#' }
 #' @export
 getb0.biseq <- function(methmat, design, sigg=NULL){
 	if (!is.null(sigg)) {
@@ -559,6 +585,12 @@ getb0.biseq <- function(methmat, design, sigg=NULL){
 #' @param x0 initial cell type composition for fitting
 #' @return x1 cell mixture of sample
 #' @return converged convergence
+#' @examples
+#' \dontrun{
+#' data("data_celltypes_rrbs") 
+#' b0.rrbs = getb0.biseq(methmat, design.rrbs, sigg=NULL)
+#' resultx1 = getx1.biseq(NB0="top_bonferroni",b0.rrbs,methmat,sample.id.rrbs,celltypes.rrbs)
+#' }
 #' @export
 getx1.biseq <- function(NB0="top_bonferroni",b0,methmat,sample.id,celltypes,MAXITER=10000,x0=NULL){
 	
@@ -624,14 +656,19 @@ getx1.biseq <- function(NB0="top_bonferroni",b0,methmat,sample.id,celltypes,MAXI
 #'
 #' do quality control of scRNAseq based on library size, feature counts, chrM, cell cycle phase, and count threshold
 #' @param scrna_mat count matrix  for single cell RNAseq
-#' @param genenametype nomenclature for genes in count matrix: "hgnc_symbol" or "ensembl_id"
+#' @param genenametype nomenclature for genes in count matrix: "hgnc_symbol" or "ensembl_id". Default is "hgnc_symbol".
 #' @param cellcycle filter for specific cell cycle phase: "G1", "G2M", or "S". Default is NULL, for no cell cycle phase filtering.
 #' @param count.threshold remove genes where average count is less than count.threshold. Default is NULL, for no count threshold filtering
 #' @return count matrix after quality control
+#' @examples
+#' \dontrun{
+#' data("data_scrnaseq") 
+#' cnts.sc = prep_scrnaseq(cnts.scrnaseq,cellcycle=NULL,count.threshold=0.05)
+#' }
 #' @export
 prep_scrnaseq <- function(scrna_mat, genenametype = "hgnc_symbol",cellcycle=NULL,count.threshold=NULL){
 	if(genenametype != "hgnc_symbol" & genenametype !="ensembl_id" ){
-		cat("Error: genenametype must be either 'hgnc_symbol' or 'ensembl_id'\n")
+		stop("Error: genenametype must be either 'hgnc_symbol' or 'ensembl_id'")
 		return()
 	}
 	
@@ -671,7 +708,7 @@ prep_scrnaseq <- function(scrna_mat, genenametype = "hgnc_symbol",cellcycle=NULL
 		scrna_mat.en= scrna_mat
 
 	} else {
-		cat('genenametype should be "hgnc_symbol" or "ensembl_id"\n')
+		stop('genenametype must be "hgnc_symbol" or "ensembl_id"')
 		return()
 	}
 
@@ -739,6 +776,12 @@ prep_scrnaseq <- function(scrna_mat, genenametype = "hgnc_symbol",cellcycle=NULL
 #' @param cellcycle filter for specific cell cycle phase: "G1", "G2M", or "S". Default is NULL, for no cell cycle phase filtering.
 #' @param species "human" or "mouse"
 #' @return count matrix containing only cells with the selected cell cycle phase
+#' @examples
+#' \dontrun{
+#' data("data_scrnaseq") 
+#' cnts.sc = prep_scrnaseq(cnts.scrnaseq,cellcycle=NULL,count.threshold=0.05)
+#' cnts.sc.G1 = getcellcycle(cnts.sc,"G1")
+#' }
 #' @export
 getcellcycle <- function(scrna_mat, cellcycle="G1",species="human"){
 	set.seed(1234)
@@ -748,7 +791,7 @@ getcellcycle <- function(scrna_mat, cellcycle="G1",species="human"){
 		} else if (species=="mouse"){
 				cc.pairs <- readRDS(system.file("exdata", "mouse_cycle_markers.rds", package="scran")) #for mouse
 		} else {
-			cat("Error: Species must be 'human' or 'mouse'\n")
+			stop("Error: Species must be 'human' or 'mouse' ")
 			return()
 		}
 		assignments <- cyclone(sce, cc.pairs, gene.names=rownames(sce))
@@ -766,6 +809,8 @@ getcellcycle <- function(scrna_mat, cellcycle="G1",species="human"){
 #' do quality control of scRNAseq based on library size, feature counts, chrM, cell cycle phase, and count threshold
 #' @param rho correlations
 #' @return mean correlation and 95% CI
+#' @examples
+#' getmeancorr(c(0.1,0.2,0.3))
 #' @export
 getmeancorr <- function(rho){
 	rho = rho[which(!is.na(rho))]

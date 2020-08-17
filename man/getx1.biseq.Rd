@@ -39,3 +39,10 @@ converged convergence
 \description{
 compute mixture data given projection matrix (bisulfite sequencing)
 }
+\examples{
+\dontrun{
+data("data_celltypes_rrbs") 
+b0.rrbs = getb0.biseq(methmat, design.rrbs, sigg=NULL)
+resultx1 = getx1.biseq(NB0="top_bonferroni",b0.rrbs,methmat,sample.id.rrbs,celltypes.rrbs)
+}
+}

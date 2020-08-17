@@ -32,3 +32,10 @@ pfstat F-stat p-values for each gene
 \description{
 compute b0, projection matrix, given counts
 }
+\examples{
+\dontrun{
+ data("data_celltypes_rnaseq") 
+ dge.celltypes = getdge(cnts.celltypes, design.rnaseq, ncpm.min=1, nsamp.min=4)
+ b0 = getb0.rnaseq(dge.celltypes, design.rnaseq, ncpm.min=1, nsamp.min=4, sigg=NULL)
+ }
+}
